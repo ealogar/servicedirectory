@@ -1,0 +1,9 @@
+pymongo==2.5
+python-rest-client==0.3
+requests==1.2.0
+lettuce==0.2.16
+selenium==2.32.0
+lettuce_webdriver==0.3
+nose==1.3.0
+psutil==0.7.1
+paramiko==1.8.0

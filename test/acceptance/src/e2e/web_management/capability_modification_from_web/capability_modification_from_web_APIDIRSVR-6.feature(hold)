@@ -1,0 +1,156 @@
+# -*- coding: utf-8 -*-
+Feature: Capability Modification from Web
+
+	As a Service Directory Administrator I would like to be able to modify an endpoint to an already existent capability in the Service Directory (with all the needed information: url, parameters, etc.)
+ 
+  Scenario Outline: Web capability modification form layout_TDAFBA-569
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I should see a form with csrf token
+        And I press "edit-$api_name"
+        Then I should see "Edit capability: $api_name"
+        And I should see a form with csrf token
+        And I should see "Description"
+        And I should see "Default Version"
+        And The element with id of "editDescriptionField" contains placeholder "Description"
+        And The element with id of "editVersionField" contains placeholder "1.0.0"
+        And I should see "$description"
+        And I should see "$default_version"
+        Examples:
+            | old_cap_index |
+            | 0             |
+
+    Scenario Outline:  Web modification of a capability with valid mandatory data_TDAFBA-490
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "edit-$api_name"
+        And I fill in "editVersionField" with "<default_version>"
+        And I press "edit-capability"
+        And I store in world the capability "$api_name", "$description", "<default_version>"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/$api_name returns the updated capability data
+        Examples:
+            | default_version         | old_cap_index | web_message        |
+            | v                       | 0             | Capability Updated |
+            | 1.0                     | 0             | Capability Updated |
+            | v57.12.12.110b-unstable | 0             | Capability Updated |
+            | á.é.í                   | 0             | Capability Updated |
+
+    Scenario Outline: Web modification of a capability with valid mandatory and optional data_TDAFBA-491
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "edit-$api_name"
+        And I fill in "editDescriptionField" with "<description>"
+        And I fill in "editVersionField" with "<default_version>"
+        And I press "edit-capability"
+        And I store in world the capability "$api_name", "<description>", "<default_version>"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/$api_name returns the updated capability data
+        Examples:
+            | description       | default_version | old_cap_index | web_message        |
+            | d                 | v               | 0             | Capability Updated |
+            |                   | 1.0             | 0             | Capability Updated |
+            | Short Description | 1.0             | 0             | Capability Updated |
+            | Long description which contains a small story in several lines.\nEvery Sunday, the birds go to their bird church. All the birds in that parish go there. Starlings, eagles, pigeons, sparrows, blackbirds, ducks, geese, and so on.\nThe birds enter the church. Gravely, silently, they file into the church and find their way to their seats in the wooden church pews.\nMusic plays. Then, the bird preacher enters the room, using a small door behind the main altar. The bird preacher makes a dramatic gesture. Then he clears his throat and addresses his congregation. | 1.0 | 0 | Capability Updated |
+            | Description with symbols: _-+*=.,;"'@#$%()/\?! | 1.0 | 0 | Capability Updated |
+            | ñçúóíéá          | 1.0             | 0             | Capability Updated |
+
+
+    Scenario Outline: Web modification of a capability adding just optional data that was not there_TDAFBA-492
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | default_version |
+            | Cap      | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "edit-$api_name"
+        And I fill in "editDescriptionField" with "<description>"
+        And I press "edit-capability"
+        And I store in world the capability "$api_name", "<description>", "$default_version"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/$api_name returns the updated capability data
+        Examples:
+            | description      | old_cap_index | web_message        |
+            | Some description | 0             | Capability Updated |
+
+    Scenario Outline: Web modification of a capability with invalid data_TDAFBA-493
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "edit-$api_name"
+        And I fill in "editDescriptionField" with "<description>"
+        And I fill in "editVersionField" with "<default_version>"
+        And I press "edit-capability"
+        And I store in world the capability "$api_name", "<description>", "<default_version>"
+        Then I should see "400"
+        And I should see "SVC0004"
+        And the DB contains just the old capability data
+        Examples:
+            | description      | default_version | old_cap_index |
+            |                  |                 | 0             |
+            | Some description |                 | 0             |
+
+    Scenario Outline: Web modification of a capability not already published_TDAFBA-494
+        Given the DB is working
+        And a capability has not already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap  | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        Then I should not see "$api_name"
+        Examples:
+            | old_cap_index |
+            | 0             |
+
+    Scenario Outline: Web capability modification cancel_TDAFBA-570
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "edit-$api_name"
+        And I fill in "editDescriptionField" with "<description>"
+        And I fill in "editVersionField" with "<default_version>"
+        And I press "close-edit-capability"
+        Then The element with id of "title-capabilities" contains "Capabilities"
+        And The element with id of "column-title-capability" contains "Capability"
+        And The element with id of "column-title-description" contains "Description"
+        And The element with id of "column-title-default-version" contains "Default Version"
+        And The element with id of "column-title-options" contains "Options"
+        And I should see a form with csrf token
+        And I should see a link that contains the text "$api_name" and the url "$api_name/$endpoints_url"
+        And I should see "$api_name"
+        And I should see "$description"
+        And I should see "$default_version"
+        Examples:
+            | description       | default_version | old_cap_index |
+            | d                 | v               | 0             |
+
+    Scenario Outline: Web modification of a capability when the DB is down_TDAFBA-495
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the DB has stopped working
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        Then I should see "500"
+        Examples:
+            | old_cap_index |
+            | 0             |

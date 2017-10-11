@@ -1,0 +1,95 @@
+# -*- coding: utf-8 -*-
+Feature: Endpoint Deleting from Web
+
+	As a capability provider, I would like to have access to a web site for being able to delete the endpoints that are being exposed by the Service Directory.
+ 
+    Scenario Outline: Deletion of an endpoint_TDAFBA-583
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    |
+            | 1.0     | http://endpoint.tid.es |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "del-$endpoint_id"
+        And I press "del-endpoint"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/$api_name/$endpoints_url/$endpoint_id returns the error code 404 with error code SVC0002 
+    
+    Examples:
+        | old_cap_index | old_endpoint_index | web_message      |
+      	| 0             | 0                  | EndPoint Removed |     
+        
+    Scenario Outline: Deletion of an endpoint and confirmation message cancellation_TDAFBA-584
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        And I store in world the endpoint with data <endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "del-$endpoint_id"
+        And I press "close-del-endpoint"
+        Then the URL $base_api_url/$apis_url/$api_name/$endpoints_url/$endpoint_id returns the endpoint data
+        And I should see a form with csrf token
+        And The element with id of "column-title-url" contains "URL"
+        And The element with id of "column-title-version" contains "Version"
+        And The element with id of "column-title-environment" contains "Environment"
+        And The element with id of "column-title-ob" contains "OB"
+        And The element with id of "column-title-premium" contains "Premium"
+        And The element with id of "column-title-options" contains "Options"
+        And I should see "$url"
+        And I should see "$version"
+        And I should see "$environment"
+        And I should see "$ob"
+
+    Examples:
+        | old_cap_index | old_endpoint_index | endpoint_index |
+        | 0             | 0                  | 0              |         
+        
+   Scenario Outline: Deletion of an endpoint layout_TDAFBA-585
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "del-$endpoint_id"
+        Then I should see "<web_message>"
+        And I should see a form with csrf token
+        And I should see "$api_name"
+        And I should see "$url"
+        And I should see "$default_version"
+    
+    Examples:
+        | old_cap_index | old_endpoint_index | web_message  |
+        | 0             | 0                  | Are you sure?|
+      
+    Scenario Outline: Deletion of an endpoint when the DB is down_TDAFBA-586
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the DB has stopped working
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "del-"
+        And I press "del-endpoint"
+        Then I should see "500"
+        And I should see "SVC0001"
+        
+    Examples:
+        | old_cap_index | old_endpoint_index |
+        | 0             | 0                  |
+

@@ -1,0 +1,20 @@
+[
+    {
+        "api_name": "sample",
+        "environment": "development",
+        "id": "51a76c34d0631d76dbd69df4",
+        "premium": true,
+        "service_client": "2.0.0",
+        "url": "http://sample.dev",
+        "version": "1.0.0"
+    },
+    {
+        "api_name": "sample",
+        "environment": "development",
+        "id": "51a76c34d0631d76dbd69df4",
+        "premium": true,
+        "service_client": "2.0.0",
+        "url": "http://sample2.dev",
+        "version": "1.0.0"
+    }
+]

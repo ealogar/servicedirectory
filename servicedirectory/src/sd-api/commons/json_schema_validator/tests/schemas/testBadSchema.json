@@ -1,0 +1,17 @@
+{
+    "title": "BadUserModel",
+    "description": "User Model Schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties":
+    {
+        "user": {
+            "type":"string",
+            "required": true
+        },
+        "password": {
+            "type":"string",
+            "required": true
+        }
+    }
+}

@@ -1,0 +1,127 @@
+{% extends "main_frame.html" %}
+{% block content %}
+{% load staticfiles %}
+
+     <div class="row-fluid">
+        <div class="span12">
+            <h2 id="title-endpoints" class="text-center">Endpoints of {{ api_name }}</h2>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th id="column-title-url">URL</th>
+                        <th id="column-title-version">Version</th>
+                        <th id="column-title-environment" class="hidden-phone">Environment</th>
+                        <th id="column-title-ob" class="hidden-phone">OB</th>
+                        <th id="column-title-premium" class="hidden-phone">Premium</th>
+                        <th id="column-title-options">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for endpoint in endpoints %}
+                    <tr>
+                        <td><a class="linkStyled" id="{{ endpoint.id }}">{{ endpoint.url }}</a></td>
+                        <td>{{ endpoint.version }}</td>
+                        <td>{{ endpoint.environment }}</td>
+                        <td class="hidden-phone">{{ endpoint.ob }}</td>
+                        <td class="hidden-phone">
+                            {% if endpoint.premium %}
+                                <i class="icon-ok icon"></i>
+                            {% else %}
+                                <i class="icon-remove icon"></i>
+                            {% endif %}
+                        </td>
+                        <td end_id="{{ endpoint.id }}" api_name="{{ api_name }}" version="{{ endpoint.version }}" environment="{{ endpoint.environment }}" url="{{ endpoint.url }}" ob="{{ endpoint.ob }}" premium="{% if endpoint.premium %}true{% else %}false{% endif %}" >
+                            <a id="edit-{{ endpoint.id }}" class="btn btn-mini btn-primary showEditEndModal" ><i class="icon-pencil icon-white"></i></a>
+                            <a id="del-{{ endpoint.id }}" class="btn btn-mini btn-primary showRemoveEndModal" ><i class="icon-minus icon-white"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Edit Endpoint Modal -->
+    <div id="editEndpointModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="editEndModalLabel"></h3>
+        </div>
+        <div class="modal-body">
+            <form id="editForm" action="../capabilities/editEnd" method="post">
+                {% csrf_token %}
+                <input id="apiNameField" type="hidden" name="api_name">
+                <input id="idEndField" type="hidden" name="id_end">
+                <div class="row-fluid">
+                    <div class="span4">
+                        <label>Environment</label>
+                        <div class="input-append">
+                            <input class="span11" id="environmentTextField" name="environment" type="text">
+                            <div class="btn-group">
+                                <ul class="dropdown-menu">
+                                    <li><a class="envItem" item="production" style="cursor: pointer">production</a></li>
+                                    <li><a class="envItem" item="preproduction" style="cursor: pointer">preproduction</a></li>
+                                    <li><a class="envItem" item="integration" style="cursor: pointer">integration</a></li>
+                                    <li><a class="envItem" item="development" style="cursor: pointer">development</a></li>
+                                </ul>
+                                <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+
+                            </div>
+                        </div>
+                        <label>Version</label>
+                        <input id="versionField" type="text" name="version" placeholder="Version Number">
+                        <label>Url</label>
+                        <input id="urlField" type="text" name="url" placeholder="Url">
+                    </div>
+                    <div class="span1"></div>
+                    <div class="span5">
+                        <label>OB</label>
+                        <input id="obField" type="text" name="ob" placeholder="OB identifier">
+
+                        <br/>
+                        <br/>
+                        <label id="premiumCheckBox" class="checkbox">
+                            <input id="premiumField" type="checkbox" name="premium"> Premium
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button id="close-edit-endpoint" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button id="edit-endpoint" class="btn btn-primary submitEditForm" >Edit Endpoint</button>
+        </div>
+    </div>
+
+    <!-- Remove Endpoint Modal -->
+    <div id="removeEndModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="removeEndModalLabel"></h3>
+        </div>
+        <div class="modal-body">
+            <p class="text-center">Are you sure?</p>
+            <form id="deleteForm" action="/sd/web/capabilities/endpoints/removeEnd" method="post">
+                {% csrf_token %}
+                <input id="apiNameRemoveField" type="hidden" name="api_name">
+                <input id="idEndRemoveField" type="hidden" name="id_end">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button id="close-del-endpoint" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button id="del-endpoint" class="btn btn-danger deleteEndpoint" >Remove Endpoint</button>
+        </div>
+    </div>
+
+{%  endblock %}
+
+
+{% block scripts %}
+    <script src="{% static "js/endpoints-main.min.js" %}"></script>
+{% endblock %}

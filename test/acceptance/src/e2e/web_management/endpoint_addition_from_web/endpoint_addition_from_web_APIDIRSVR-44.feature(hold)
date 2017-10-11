@@ -1,0 +1,293 @@
+# -*- coding: utf-8 -*-
+Feature: Endpoint Addition from Web
+
+	As a Service Directory Administrator I would like to be able to add a new endpoint to an already existent capability in the Service Directory (with all the needed information: url, parameters, etc.
+ 
+  Scenario Outline: Web endpoint addition form layout_TDAFBA-566
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I should see a form with csrf token
+        And I press "add-endpoint-$api_name"
+        Then I should see "Add new Endpoint to $api_name"
+        And I should see a form with csrf token
+        And I should see "Environment"
+        And I should see "Version"
+        And I should see "Url"
+        And I should see "OB"
+        And I should see "Premium"
+        And The element with id of "endpoint-version" contains placeholder "Version Number"
+        And The element with id of "endpoint-url" contains placeholder "Url"
+        And The element with id of "endpoint-ob" contains placeholder "OB identifier"
+        And The "endpoint-premium" checkbox should not be checked
+        Examples:
+            | old_cap_index |
+            | 0             |
+
+    Scenario Outline: Web capability endpoints page layout_TDAFBA-567
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        Then The element with id of "title-endpoints" contains "Endpoints of $api_name"
+        And The element with id of "column-title-url" contains "URL"
+        And The element with id of "column-title-version" contains "Version"
+        And The element with id of "column-title-environment" contains "Environment"
+        And The element with id of "column-title-ob" contains "OB"
+        And The element with id of "column-title-premium" contains "Premium"
+        And The element with id of "column-title-options" contains "Options"
+        And I should see a form with csrf token
+        And I should see "$url"
+        And I should see "$version"
+        And I should see "$environment"
+        And I should see "$ob"
+        Examples:
+            | old_cap_index | old_endpoint_index |
+            | 0             | 0                  |
+
+    Scenario Outline: Web addition of an endpoint with valid mandatory data_TDAFBA-501
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I press "add-endpoint"
+        And I store in world the endpoint "<url>", "<version>", "False", ""
+        Then I should see "<web_message>"
+        # TODO endpoint requesting through api
+        Examples:
+            | version           | url                      | old_cap_index | web_message    |
+            | v                 | u                        | 0             | EndPoint Added |
+            | 1.0               | https://endpoints.tid.es | 0             | EndPoint Added |
+            | 1.0               | endpoints.tid.es         | 0             | EndPoint Added |
+            | v2.23.23.2.4-apis | http://Very-long-urllllllllllllllllllllllllllllllllllll.com | 0 | EndPoint Added |
+
+    Scenario Outline: Web addition of an endpoint with valid mandatory and optional data_TDAFBA-502
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I check "endpoint-premium" with "<premium>"
+        And I fill in "endpoint-ob" with "<ob>"
+        And I press "add-endpoint"
+        And I store in world the endpoint "<url>", "<version>", "<premium>", "<ob>"
+        Then I should see "<web_message>"
+        # TODO endpoint requesting through api
+        Examples:
+            | version | url                     | environment | premium | ob | old_cap_index | web_message    |
+            | 1.0     | http://endpoint1.tid.es | 1           | False   | 1  | 0             | EndPoint Added |
+            | 1.0     | http://endpoint2.tid.es | 2           | True    | 2  | 0             | EndPoint Added |
+            | 1.0     | http://endpoint3.tid.es | production  | False   | ES | 0             | EndPoint Added |
+            | 1.0     | http://endpoint4.tid.es | integration | True    | DE | 0             | EndPoint Added |
+            | 1.0     | http://endpoint5.tid.es | Long_environment-name_in_case_it_is_started_to_be_filled_using_some_long_weird_format | True    | long_ob-name_in_case_it_is_started_to_be_filled_using_some_long_weird_format | 0 | EndPoint Added |
+
+    Scenario Outline: Web addition of an endpoint with invalid mandatory data_TDAFBA-503
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I press "add-endpoint"
+        And I store in world the endpoint "<url>", "<version>", "False", ""
+        Then I should see "400"
+        Then I should see "SVC0004"
+        # TODO endpoint does not exist requesting through api
+        Examples:
+            | version | url                    | old_cap_index |
+            |         | http://endpoint.tid.es | 0             |
+            | 1.0     |                        | 0             |
+
+    Scenario Outline: Web addition of an endpoint with invalid optional data_TDAFBA-504
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I check "endpoint-premium" with "<premium>"
+        And I fill in "endpoint-ob" with "<ob>"
+        And I press "add-endpoint"
+        And I store in world the endpoint "<url>", "<version>", "<premium>", "<ob>"
+        Then I should see "400"
+        Examples:
+            | version | url                     | environment | premium | ob | old_cap_index |
+            | 1.0     | http://endpoint1.tid.es |             | True    | ES | 0             |
+            | 1.0     | http://endpoint2.tid.es | integration | True    |    | 0             |
+
+    Scenario Outline: Web addition of endpoints with different mandatory data _TDAFBA-505
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    |
+            | 1.0     | http://endpoint.tid.es |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I press "add-endpoint"
+        And I store in world the endpoint "<url>", "<version>", "False", ""
+        Then I should see "<web_message>"
+        # TODO check location
+        Examples:
+            | version | url                           | old_cap_index | old_endpoint_index | web_message    |
+            | 2.0     | http://endpoint.tid.es        | 0             | 0                  | EndPoint Added |
+            | 1.0     | http://backup.endpoint.tid.es | 0             | 0                  | EndPoint Added |
+
+    Scenario Outline: Web addition of endpoints with the same mandatory data _TDAFBA-506
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    |
+            | 1.0     | http://endpoint.tid.es |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I press "add-endpoint"
+        And I store in world the endpoint "<url>", "<version>", "False", ""
+        Then I should see "<web_message>"
+        And I should see "<error_code>"
+        And I should see "<error_description>"
+        Examples:
+            | version | url                    | old_cap_index | old_endpoint_index | web_message      | error_code | error_description |
+            | 1.0     | http://endpoint.tid.es | 0             | 0                  | Creation Failure | Error_Code: SVC0003 | Description: Endpoint with api_name: Cap , url: http://endpoint.tid.es and version: 1.0 already exists |
+
+    Scenario Outline: Web addition of endpoints with the same mandatory data and different optional data_TDAFBA-507
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | premium | ob |
+            | 1.0     | http://endpoint.tid.es | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I check "endpoint-premium" with "<premium>"
+        And I fill in "endpoint-ob" with "<ob>"
+        And I press "add-endpoint"
+        And I store in world the endpoint "<url>", "<version>", "<premium>", "<ob>"
+        Then I should see "<web_message>"
+        And I should see "<error_code>"
+        And I should see "<error_description>"
+        Examples:
+            | version | url                    | environment | premium | ob | old_cap_index | old_endpoint_index | web_message      | error_code | error_description |
+            | 1.0     | http://endpoint.tid.es | production  | True    | ES | 0             | 0                  | Creation Failure | Error_Code: SVC0003 | Description: Endpoint with api_name: Cap , url: http://endpoint.tid.es and version: 1.0 already exists|
+            | 1.0     | http://endpoint.tid.es | integration | False   | ES | 0             | 0                  | Creation Failure | Error_Code: SVC0003 | Description: Endpoint with api_name: Cap , url: http://endpoint.tid.es and version: 1.0 already exists |
+            | 1.0     | http://endpoint.tid.es | integration | True    | DE | 0             | 0                  | Creation Failure | Error_Code: SVC0003 | Description: Endpoint with api_name: Cap , url: http://endpoint.tid.es and version: 1.0 already exists |
+            | 1.0     | http://endpoint.tid.es | production  | False   | DE | 0             | 0                  | Creation Failure | Error_Code: SVC0003 | Description: Endpoint with api_name: Cap , url: http://endpoint.tid.es and version: 1.0 already exists |
+
+    Scenario Outline: Web endpoint addition cancel_TDAFBA-568
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I check "endpoint-premium" with "<premium>"
+        And I fill in "endpoint-ob" with "<ob>"
+        And I press "close-add-endpoint"
+        Then The element with id of "title-capabilities" contains "Capabilities"
+        And The element with id of "column-title-capability" contains "Capability"
+        And The element with id of "column-title-description" contains "Description"
+        And The element with id of "column-title-default-version" contains "Default Version"
+        And The element with id of "column-title-options" contains "Options"
+        And I should see a form with csrf token
+        And I should see a link that contains the text "$api_name" and the url "$api_name/$endpoints_url"
+        And I should see "$api_name"
+        And I should see "$description"
+        And I should see "$default_version"
+        Examples:
+            | version | url                     | environment | premium | ob | old_cap_index |
+            | 1.0     | http://endpoint1.tid.es | 1           | False   | 1  | 0             |
+
+    Scenario Outline: Web capability publication order_TDAFBA-687
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 2.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | premium | ob |
+            | 4.0     | http://endpoint.tid.es | True    | ES |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | premium | ob |
+            | 1.0     | http://endpoint.tid.es | True    | ES |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | premium | ob |
+            | 2.0     | http://endpoint.tid.es | True    | ES |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | premium | ob |
+            | 3.0     | http://endpoint.tid.es | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        Then endpoints should be ordered by version
+        Examples:
+            | old_cap_index | old_endpoint_index |
+            | 0             | 0                  |
+
+    Scenario Outline: Publication of a capability when the DB is down_TDAFBA-508
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the DB has stopped working
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        And I press "add-endpoint-$api_name"
+        And I should see a form with csrf token
+        And I fill in "endpoint-url" with "<url>"
+        And I fill in "endpoint-version" with "<version>"
+        And I press "add-endpoint"
+        And I store in world the endpoint "<url>", "<version>", "False", ""
+        Then I should see "<web_message>"
+        And I should see "<error_code>"
+        And I should see "<error_description>"
+        Examples:
+            | version | url                    | old_cap_index | web_message      | error_code | error_description      |
+            | 1.0     | http://endpoint.tid.es | 0             | Error Message    | 400        | Please try again later |

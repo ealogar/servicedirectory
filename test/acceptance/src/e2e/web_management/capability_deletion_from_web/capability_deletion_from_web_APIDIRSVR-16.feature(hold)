@@ -1,0 +1,76 @@
+# -*- coding: utf-8 -*-
+Feature: Capability Deleting from Web
+
+	As a capability provider, I would like to have access to a web site for being able to delete a capability(api_name) exposed by the Service Directory.
+ 
+    Scenario Outline: Deletion of a capability_TDAFBA-587
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/capabilities"
+        And I press "remove-$api_name"
+        And I press "del-capability"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/$api_name/ returns the error code 404 with error code SVC0002
+       
+    Examples:
+        | old_cap_index | web_message        |
+        | 0             | Capability Removed |
+        
+           
+    Scenario Outline: Deletion of a capability and confirmation message cancellation_TDAFBA-588
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/capabilities"
+        And I press "remove-$api_name"
+        And I press "close-del-capability"
+        Then the URL $base_api_url/$apis_url/$api_name returns the capability data
+        And The element with id of "column-title-capability" contains "Capability"
+        And The element with id of "column-title-description" contains "Description"
+        And The element with id of "column-title-default-version" contains "Default Version"
+        And The element with id of "column-title-options" contains "Options"
+        And I should see "$api_name"
+        And I should see "$description"
+        And I should see "$default_version"
+     
+    Examples:
+        | old_cap_index | 
+        | 0             | 
+ 
+                
+   Scenario Outline: Deletion of a capability layout_TDAFBA-589
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/capabilities"
+        And I press "remove-$api_name"
+        Then I should see "<web_message>"
+        And I should see a form with csrf token
+        And I should see "$api_name"
+    
+    Examples:
+        | old_cap_index | web_message   |
+        | 0             | Are you sure? |
+      
+    Scenario Outline: Deletion of a capability when the DB is down_TDAFBA-590
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the DB has stopped working
+        And the admin is logged
+        When I go to "$base_web_url/capabilities"
+        And I press "remove-"
+        And I press "del-capability"
+        Then I should see "500"
+        And I should see "SVC0001"
+        
+    Examples:
+        | old_cap_index |
+        | 0             |
+ 

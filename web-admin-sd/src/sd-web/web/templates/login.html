@@ -1,0 +1,59 @@
+{% load get_error_form %}
+{% load staticfiles %}
+{% spaceless %}
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <title>Sign in &middot; Service Directory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <link href="{% static "styles/bootstrap.css" %}" rel="stylesheet">
+
+    <link href="{% static "styles/responsive.css" %}" rel="stylesheet">
+    <link href="{% static "styles/sd-login-style.css" %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div id="wrap">
+        <div class="container">
+            <h1 class="login-title text-center">Service Directory Login</h1>
+
+            <div class="hero-unit">
+                <form class="form-signin" id="login" action="" method="post">
+                    {% csrf_token %}
+                    <input name="username" id="username" type="text" class="input-block-level" placeholder="username">
+                    <input name="password" id="password" type="password" class="input-block-level" placeholder="Password">
+                    <br>
+                    <br>
+                    <div>
+                        <button id="sign-in" class="btn btn-large btn-primary" type="submit">Sign in</button>
+                        <div class="login-error">
+                            {% if form != None %}
+                                {{form|get_error_form}}
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div id="push"></div>
+    </div>
+    {% include 'footer.html' %}
+
+
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+
+</body>
+</html>
+{% endspaceless %}

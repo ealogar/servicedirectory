@@ -1,0 +1,46 @@
+{% extends "main_frame.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <form id="mainForm" action="addCap" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Fill to add a new Capability</legend>
+            <div class="row-fluid">
+                <div class="span2"></div>
+                <div class="span4">
+
+                    <label>Capability Name</label>
+                    <input id="api_name" name="api_name" type="text" placeholder="Capability Name"/>
+                    <label>Description</label>
+                    <input id="description" name="description" type="text" placeholder="Description"/>
+                </div>
+                <div class="span1"></div>
+                <div class="span5">
+                    <label>Default Version</label>
+                    <input id="default_version" name="default_version" type="text" placeholder="1.0.0"/>
+                    <br/>
+
+                    <br/>
+                    <input id="id_submit" type="button" class="btn btn-large btn-primary openAlertDialog" value="Submit"/>
+                </div>
+            </div>
+        </fieldset>
+        <br>
+
+    </form>
+
+    <div class="alert alert-block alert-error" style="display: none">
+        <a class="close" data-hide="alert">×</a>
+        <h4 class="alert-heading">You are going to save a new capability. Do you want to save it?</h4><br>
+        <p>
+             <a id="save" class="btn btn-danger submitMainForm" >Save Capability</a>&nbsp;&nbsp;
+             <a id="cancel" class="btn btn-info" data-hide="alert">Cancel</a>
+        </p>
+    </div>
+
+{%  endblock %}
+
+{% block scripts %}
+    <script src="{% static "js/addCap-main.min.js" %}"></script>
+{% endblock %}

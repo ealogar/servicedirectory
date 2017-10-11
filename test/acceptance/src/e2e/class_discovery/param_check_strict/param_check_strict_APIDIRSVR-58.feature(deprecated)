@@ -1,0 +1,143 @@
+# -*- coding: utf-8 -*-
+Feature: PARAM_CHECK_STRICT
+
+	Implement the behaviour PARAM_CHECK_STRICT for the endpoint discovery:
+	PARAM_CHECK_STRICT: checks if all the query parameters have been defined for this {api_name}. In case some of then have not been defined, the request will be rejected. Launch an error if some parameter is not found or is not valid.
+ 
+    Scenario Outline: Discovery by version of an endpoint with mandatory parameters, using PARAM_CHECK_STRICT_TDAFBA-449
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    |
+            | 1.0     | http://endpoint.tid.es |
+        # the premium param is not mandatory but is always set to False by default if not defined
+        When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>: 
+            | version | behaviour          |
+            | 1.0     | PARAM_CHECK_STRICT |
+        Then I get a success response of type 200 with a result set of size 1:
+        And the result set contains the endpoint <endpoint_index>:
+            | api_name | version | url                    | environment | premium |
+            | Cap      | 1.0     | http://endpoint.tid.es | production  | False   |
+        
+    Examples:
+        | old_cap_index | old_endpoint_index | params_index | endpoint_index |
+        | 0             | 0                  | 0            | 0              |
+        
+    Scenario Outline: Discovery by several params of an endpoint, using PARAM_CHECK_STRICT_TDAFBA-450
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>: 
+            | version | environment | premium | ob | behaviour          |
+            | 1.0     | integration | true    | ES | PARAM_CHECK_STRICT |
+        Then I get a success response of type 200 with a result set of size 1:
+        And the result set contains the endpoint <endpoint_index>:
+            | api_name | version | url                    | environment | premium | ob |
+            | Cap      | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        
+    Examples:
+        | old_cap_index | old_endpoint_index | params_index | endpoint_index |
+        | 0             | 0                  | 0            | 0              |
+        
+    Scenario Outline: Discovery without params of an endpoint, using PARAM_CHECK_STRICT_TDAFBA-451
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>: 
+            | behaviour          |
+            | PARAM_CHECK_STRICT |
+        Then I get a success response of type 200 with a result set of size 1:
+        And the result set contains the endpoint <endpoint_index>:
+            | api_name | version | url                    | environment | premium | ob |
+            | Cap      | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        
+    Examples:
+        | old_cap_index | old_endpoint_index | params_index | endpoint_index |
+        | 0             | 0                  | 0            | 0              |
+        
+    Scenario Outline: Discovery by version with empty result set, using PARAM_CHECK_STRICT_TDAFBA-452
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>: 
+            | version | behaviour          |
+            | 2.0     | PARAM_CHECK_STRICT |
+        Then I get a success response of type 200 with a result set of size 0
+        
+    Examples:
+        | old_cap_index | old_endpoint_index | params_index |
+        | 0             | 0                  | 0            |
+        
+    Scenario Outline: Discovery by empty params with empty result set, using PARAM_CHECK_STRICT_TDAFBA-453
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>: 
+            | version | ob | behaviour          |
+            |         | ES | PARAM_CHECK_STRICT |
+            | 1.0     |    | PARAM_CHECK_STRICT |
+        Then I get a success response of type 200 with a result set of size 0
+        
+    Examples:
+        | old_cap_index | old_endpoint_index | params_index |
+        | 0             | 0                  | 0            |
+        | 0             | 0                  | 1            |
+        
+    Scenario Outline: Discovery by several params, some of them unknown, with empty result set, using PARAM_CHECK_STRICT_TDAFBA-454
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>: 
+            | version | premium | ob | unknown_param | behaviour          |
+            | 1.0     | True    | ES | some_value    | PARAM_CHECK_STRICT |
+        Then I get an error response of type 400 with error code SVC0004
+        
+    Examples:
+        | old_cap_index | old_endpoint_index | params_index |
+        | 0             | 0                  | 0            |
+        
+    Scenario Outline: Discovery by several params, some of them unknown, with empty result set, using lowercase PARAM_CHECK_STRICT_TDAFBA-526
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>: 
+            | version | premium | ob | unknown_param | behaviour          |
+            | 1.0     | True    | ES | some_value    | param_check_strict |
+        Then I get an error response of type 400 with error code SVC0004
+        
+    Examples:
+        | old_cap_index | old_endpoint_index | params_index |
+        | 0             | 0                  | 0            |
+        
+    Scenario Outline: Discovery of an unexisting capability using PARAM_CHECK_STRICT_TDAFBA-753
+        Given a capability has not already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>: 
+            | version |
+            | 1.0     |
+        Then I get an error response of type 404 with error code SVC0002
+        
+    Examples:
+        | old_cap_index | old_endpoint_index | params_index |
+        | 0             | 0                  | 0            |
+        

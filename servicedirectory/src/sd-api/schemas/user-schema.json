@@ -1,0 +1,47 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "UserModel",
+    "description": "User Model Schema",
+    "type": "object",
+    "additionalProperties": true,
+    "required": ["_id", "password", "is_admin"],
+    "properties": {
+        "_id": {
+            "description": "Name of the user of the pdi service for adding instances",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+        },
+        "password": {
+            "description": "Password of the user.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+        },
+        "is_admin": {
+            "description": "It indicates if the user is admin or not (by default)",
+            "type": "boolean",
+            "default": false
+        },
+        "classes": {
+            "description": "Classes that can manage.",
+            "type": "array",
+            "minLength": 0,
+            "maxLength": 1024,
+            "items" : { 
+                 "type": "string",
+                 "minLength": 1
+                }
+        },
+        "origins": {
+            "description": "Origins that can be managed by the user",
+            "type": "array",
+            "minLength": 0,
+            "maxLength": 1024,
+            "items" : { 
+                 "type": "string",
+                 "minLength": 1
+                }
+        }
+    }
+}

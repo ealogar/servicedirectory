@@ -1,0 +1,237 @@
+<?xml version="1.0" ?><testsuite errors="0" failures="20" hostname="localhost" name="lettuce" tests="98" time="0" timestamp="2013-10-21T12:34:16"><testcase classname="Capability Modification : Capability update with wrong method" name="| 0 | 0 | 0 |" time="0.000117"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability when the DB is down_TDAFBA-463" name="| 0 | 0 | 0 |" time="5.2e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability not already published_TDAFBA-461" name="| 0 | 0 | 0 |" time="6.6e-05"><failure message="api_name"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 41, in i_send_to_url_the_capability_data
+    api_utils.send_to_url_the_capability_data(step, url, cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 138, in send_to_url_the_capability_data
+    rest_utils.send_to_url_the_data(step, url, world.published_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 346, in _get_url_with_values
+    old_api_name = world.old_capability[world.config["keys"]["api_name"]]
+KeyError: u'api_name'
+]]></failure></testcase><testcase classname="Capability Modification : Publication of a new capability using unstructured data_TDAFBA-467" name="| 0 |" time="5.1e-05"><failure message="api_name"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 36, in i_send_to_url_the_data
+    rest_utils.send_to_url_the_data(step, url, data)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 346, in _get_url_with_values
+    old_api_name = world.old_capability[world.config["keys"]["api_name"]]
+KeyError: u'api_name'
+]]></failure></testcase><testcase classname="Capability Modification : Publication of a new capability using malformed data" name="| 0 |" time="5.1e-05"><failure message="api_name"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 36, in i_send_to_url_the_data
+    rest_utils.send_to_url_the_data(step, url, data)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 346, in _get_url_with_values
+    old_api_name = world.old_capability[world.config["keys"]["api_name"]]
+KeyError: u'api_name'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with invalid data_TDAFBA-458" name="| 0 | 0 | 0 |" time="8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with invalid data_TDAFBA-458" name="| 1 | 0 | 1 |" time="6.2e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability changing api_name to uppercase_TDAFBA-462" name="| 0 | 0 | 0 |" time="7.9e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory data_TDAFBA-455" name="| 0 | 0 |" time="5.3e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory data_TDAFBA-455" name="| 1 | 1 |" time="7.2e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory data_TDAFBA-455" name="| 2 | 2 |" time="5.1e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory data_TDAFBA-455" name="| 3 | 3 |" time="6.3e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory and optional data_TDAFBA-456" name="| 0 | 0 |" time="7e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory and optional data_TDAFBA-456" name="| 1 | 1 |" time="8.9e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory and optional data_TDAFBA-456" name="| 2 | 2 |" time="5.6e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory and optional data_TDAFBA-456" name="| 3 | 3 |" time="7.8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory and optional data_TDAFBA-456" name="| 4 | 4 |" time="8.7e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with valid mandatory and optional data_TDAFBA-456" name="| 5 | 5 |" time="5.5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability adding just optional data that was not there_TDAFBA-457" name="| 0 | 0 |" time="8.8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Modification : Modification of a capability with a new api_name which is ignored_TDAFBA-460" name="| 0 | 0 |" time="8.7e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_modification/steps.py", line 60, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase></testsuite>

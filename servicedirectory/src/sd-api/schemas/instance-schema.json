@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "InstanceModel",
+    "description": "Instance Model Schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required":["uri", "version", "class_name", "environment"],
+    "properties":
+    {
+        "_id": {
+            "description":"Identifier of the Instance",
+            "type":"string",
+            "minLength":1,
+            "maxLength": 56
+        }, 
+        "uri": {
+            "description":"Uri of the Service Instance",
+            "type":"string",
+            "minLength":1,
+            "maxLength": 2048
+        },
+        "version": {
+            "description":"Version of the Service Instance",
+            "type":"string",
+            "minLength":1,
+            "maxLength": 256
+        },
+        "class_name": {
+            "description": "The class name of this Service Class",
+            "type": "string",
+            "minLength":1,
+            "maxLength": 512
+        },
+        "environment": {
+            "description": "The environment for this Instance",
+            "type": "string",
+            "minLength":1,
+            "maxLength": 512,
+            "default": "production"
+        },
+        "attributes":{
+            "type": ["object"]
+        }
+    }
+}

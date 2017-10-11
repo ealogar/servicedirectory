@@ -1,0 +1,118 @@
+{
+    "environment": {
+        "name": "dev-standalone",
+        "logs_path" : "logs",
+        "python_alias" :"python2.7",
+        "run_test" : "remote"
+    },
+    "django": {
+        "base_web_url": "http://127.0.0.1:8080/sd/web",
+        "base_api_url": "http://127.0.0.1/sd/v1",
+        "apis_url": "classes",
+        "classes_url": "classes",
+        "endpoints_url": "instances",
+        "instances_url": "instances",
+        "bindings_url": "bindings",
+        "bind_instances_url": "bind_instances",
+        "request_context_rules_url": "rules",
+        "webuser": "admin",
+        "webpassword": "12345678",
+        "login_url": "login",
+        "search_cap_url": "searchCap",
+        "search_end_url": "searchEnd",
+        "add_cap_url": "addCap",
+        "capabilities_url": "capabilities",   
+        "binding_rules":"binding_rules",
+        "users_url": "users"  
+    },
+    "mongodb": {
+        "host": "127.0.0.1",
+        "port": 27017,
+        "database": "sd",
+        "apis_col": "serviceclasses",
+        "endpoints_col": "serviceinstances",
+        "users_col": "users",
+        "bindings_col":"bindings",
+        "_id": "_id"
+    },
+    "sd_server": {
+        "run_command_params": "../../../servicedirectory/src/sd-api/manage.py runserver --settings=settings.$env",
+        "out_file": "logs/sd.out",
+        "err_file": "logs/sd.err",
+        "common_config_file": "/opt/pdi/srvdir/servicedirectory/sd-api/settings/common.py",
+        "common_config_file_backup": "/tmp/common.py.backup-lettuce",
+        "common_config_file_win": "../../../servicedirectory/src/sd-api/settings/common.py",
+        "common_config_file_backup_win": "./common.py.backup-lettuce",
+        "log_path": "/var/log/pdi/srvdir/",
+        "log_file": "service_directory.log",
+        "schema_file": "/opt/pdi/srvdir/servicedirectory/sd-api/schemas/class-schema.json",
+        "schema_file_backup": "/tmp/schema.py.backup-lettuce",
+        "schema_file_win": "../../../servicedirectory/src/sd-api/schemas/class-schema.json",
+        "schema_file_backup_win": "./schema.py.backup-lettuce",
+        "schema_folder": "/opt/pdi/srvdir/servicedirectory/sd-api/schemas",
+        "schema_folder_backup": "/tmp/scheme-folder-backup-lettuce",
+        "schema_folder_win": "../../../servicedirectory/src/sd-api/schemas",
+        "schema_folder_backup_win": "./scheme-folder-backup-lettuce"
+    },
+    "ha" : {
+        "mongo_list" : ["10.95.184.52","10.95.184.53","10.95.184.54"],    
+        "frontend_list" : ["10.95.184.38","10.95.184.51"],
+        "frontend_balancer" : "10.95.184.35",
+        "username" : "epg",
+        "enabled": true
+    },
+    "web_server": {
+        "run_command_params": "../../../web-admin-sd/src/sd-web/manage.py runserver 8080 --settings=settings.$env",
+        "out_file": "logs/sd.out",
+        "err_file": "logs/sd.err"
+    },
+   	"cli_client": {
+        "path": "../../../client-libraries/sd-admin-library/src/com/tdigital/sd/cli",
+        "common_config_file": "TBD",
+        "common_config_file_backup": "TBD",
+        "common_config_file_win": "D:/Desarrollo/PythonSandboxes/ServiceDirectory/Lib/site-packages/sd_admin_library-v1-py2.7.egg/sd-config/cli.conf",
+        "common_config_file_backup_win": "./cli.conf.backup-lettuce"
+    },
+    "sd_mock": {
+        "run_command_params": "component/common/sd_mock.py --host 127.0.0.1 --port 8000",
+        "out_file": "logs/sd_mock.out",
+        "err_file": "logs/sd_mock.err",
+        "base_url": "http://127.0.0.1:8000"
+    },
+    "keys": {
+        "error_code": "exceptionId",
+        "id": "id",
+        "binding_id":"id",
+        "api_name": "class_name",
+        "class_name": "class_name",
+        "description": "description",
+        "default_version": "default_version",
+        "version": "version",
+        "uri": "uri",
+        "url": "url",
+        "environment": "environment",
+        "rules":"rules",
+        "client_rules":"client_rules",
+        "bindings":"bindings",
+        "api_client_name":"client_name",
+        "origin":"origin",
+        "error_text":"exceptionText",
+        "binding_rules":"binding_rules",
+        "group_rules":"group_rules",
+        "attributes":"attributes"
+    },
+    "api_prefs": {
+        "attributes": {
+            "default_value": null
+        },
+        "environment": {
+            "default_value": "production"
+        }
+    },
+    "browser_prefs": {
+        "browser": "firefox",
+        "chromedriver_path": "/opt/chromedriver/chromedriver",
+        "chromedriver_path_windows": "c:\\opt\\chromedriver\\chromedriver",
+        "chromedriver_log_path": "logs/chromedriver.log"
+    }
+}

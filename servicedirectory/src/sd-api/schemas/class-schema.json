@@ -1,0 +1,27 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ClassModel",
+    "description": "Class Model Schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["_id", "default_version"],
+    "properties": {
+        "_id": {
+            "description": "Name of the Class of the pdi service for adding instances",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+        },
+        "description": {
+            "description": "Description of the Class.",
+            "type": "string",
+            "maxLength": 1024
+        },
+        "default_version": {
+            "description": "Default Class Version.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+        }
+    }
+}

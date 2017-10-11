@@ -1,0 +1,22 @@
+{
+    "title": "OptionalProperties",
+    "description": "User Model Schema",
+    "type": "object",
+    "additionalProperties": true,
+    "required":["user", "password"],
+    "properties":
+    {
+        "user": {
+            "type":"string"
+        },
+        "password": {
+            "type":"string"
+        }, 
+        "obi": {
+            "type":"string"
+        }, 
+        "oba": {
+            "type":"string"
+        }
+    }
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" ?><testsuite errors="0" failures="6" hostname="localhost" name="lettuce" tests="35" time="0" timestamp="2013-10-21T12:34:15"><testcase classname="Capability Deleting : Deletion the capability collections" name="| 0 |" time="0.000139"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_deletion/steps.py", line 36, in i_delete_url
+    rest_utils.delete_url(step, url)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 205, in delete_url
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Deleting : Deletion of a capability not already published_TDAFBA-530" name="| 0 | 0 |" time="6.5e-05"><failure message="api_name"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_deletion/steps.py", line 36, in i_delete_url
+    rest_utils.delete_url(step, url)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 205, in delete_url
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 346, in _get_url_with_values
+    old_api_name = world.old_capability[world.config["keys"]["api_name"]]
+KeyError: u'api_name'
+]]></failure></testcase><testcase classname="Capability Deleting : Deletion of a capability when the DB is down_TDAFBA-531" name="| 0 | 0 |" time="7.5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_deletion/steps.py", line 51, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Deleting : Deletion of a capability with mandatory data_TDAFBA-527" name="| 0 | 0 |" time="4.8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_deletion/steps.py", line 51, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Deleting : Deletion of a capability with mandatory and optional data_TDAFBA-528" name="| 0 | 0 |" time="7.1e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_deletion/steps.py", line 51, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Capability Deleting : Deletion of a capability with endpoints_TDAFBA-529" name="| 0 | 0 | 0 |" time="8.5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/capability_deletion/steps.py", line 51, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase></testsuite>

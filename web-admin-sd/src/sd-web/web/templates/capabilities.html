@@ -1,0 +1,151 @@
+{% extends "main_frame.html" %}
+{% block content %}
+{% load url from future %}
+{% load staticfiles %}
+
+    <div class="row-fluid">
+        <div class="span12">
+            <h2 id="title-capabilities" class="text-center">Capabilities</h2>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th id="column-title-capability">Capability</th>
+                        <th id="column-title-description" class="hidden-phone">Description</th>
+                        <th id="column-title-default-version">Default Version</th>
+                        <th id="column-title-options">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for capability in capabilities %}
+                    <tr>
+                        <td><a class="normalLink" href="{{ capability.web_href }}">{{ capability.api_name }}</a></td>
+                        <td class="hidden-phone">{{ capability.description }}</td>
+                        <td>{{ capability.default_version }}</td>
+                        <td api_name="{{ capability.api_name }}" description="{{ capability.description }}" default_version="{{ capability.default_version }}">
+                            <a id="add-endpoint-{{capability.api_name}}" class="btn btn-mini btn-primary showAddEndModal" ><i class="icon-plus icon-white"></i></a>
+                            <a id="edit-{{capability.api_name}}" class="btn btn-mini btn-primary showEditCapModal" ><i class="icon-pencil icon-white"></i></a>
+                            <a id="remove-{{capability.api_name}}" class="btn btn-mini btn-primary showRemoveCapModal" ><i class="icon-minus icon-white"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Add Endpoint Modal -->
+    <div id="addEndpointModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"></h3>
+        </div>
+        <div class="modal-body">
+            <form id="addEndForm" action="capabilities/addEnd" method="post">
+                {% csrf_token %}
+                <input id="apiNameField"  name="api_name" type="hidden">
+                <div class="span4">
+                    <label>Environment</label>
+                    <div class="input-append">
+                        <input class="span11" id="environmentTextField" name="environment" type="text">
+                        <div class="btn-group">
+                            <ul class="dropdown-menu">
+                                <li><a class="envItem" item="production" style="cursor: pointer">production</a></li>
+                                <li><a class="envItem" item="preproduction" style="cursor: pointer">preproduction</a></li>
+                                <li><a class="envItem" item="integration" style="cursor: pointer">integration</a></li>
+                                <li><a class="envItem" item="development" style="cursor: pointer">development</a></li>
+                            </ul>
+                            <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+
+                        </div>
+                    </div>
+                    <label>Version</label>
+                    <input id="endpoint-version" type="text" name="version" placeholder="Version Number">
+                    <label>Url</label>
+                    <input id="endpoint-url" type="text" name="url" placeholder="Url">
+                </div>
+                <div class="span1"></div>
+                <div class="span5">
+                    <label>OB</label>
+                    <input id="endpoint-ob" type="text" name="ob" placeholder="OB identifier">
+
+                    <br/>
+                    <br/>
+                    <label class="checkbox">
+                        <input id="endpoint-premium" type="checkbox" name="premium"> Premium
+                    </label>
+                    {# <label class="checkbox"> #}
+                        {# <input type="checkbox"> Set as Default Version.  #}
+                    {# </label> #}
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button id="close-add-endpoint" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button id="add-endpoint" class="btn btn-primary submitAddEndForm" >Add Endpoint</button>
+        </div>
+    </div>
+
+    <!-- Edit Capability Modal -->
+    <div id="editCapabilityModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="editCapModalLabel"></h3>
+        </div>
+        <div class="modal-body">
+            <form id="editForm" action="editCap" method="post">
+                {% csrf_token %}
+                <input id="apiNameFieldEdit" name="api_name" type="hidden">
+                <div class="row-fluid">
+                    <div class="span1"></div>
+                    <div class="span4">
+
+                        <label>Description</label>
+                        <input id="editDescriptionField" name="description" type="text" placeholder="Description">
+                    </div>
+                    <div class="span1"></div>
+                    <div class="span5">
+                        <label>Default Version</label>
+                        <input id="editVersionField" name="default_version" type="text" placeholder="1.0.0">
+                        {# <input type="submit" class="btn btn-large btn-primary" value="Submit">  #}
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button id="close-edit-capability"  class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button id="edit-capability" class="btn btn-primary submitEditForm" >Edit Capability</button>
+        </div>
+    </div>
+
+    <!-- Remove Capability Modal -->
+    <div id="removeCapModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="removeCapModalLabel"></h3>
+            <form id="removeForm" method="post" action={% url 'web:removeCapabilities' %}>
+                {% csrf_token %}
+                <input id="capabilityRemoveField" type="hidden" name="api_name">
+            </form>
+        </div>
+        <div class="modal-body">
+            <p class="text-center">Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+            <button id="close-del-capability" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button id="del-capability" class="btn btn-danger deleteCapability" >Remove Capability</button>
+        </div>
+    </div>
+
+
+{%  endblock %}
+
+
+{% block scripts %}
+    <script src="{% static "js/capabilities-main.min.js" %}"></script>
+{% endblock %}

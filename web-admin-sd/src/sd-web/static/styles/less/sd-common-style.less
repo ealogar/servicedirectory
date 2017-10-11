@@ -1,0 +1,58 @@
+@import "variables.less";
+
+@import "mixins.less";
+
+
+html, body {
+    height: 100%;
+    #gradient > .radial(#76DCFA, #1691B6);
+    min-height: 100%;
+    background-attachment:fixed;
+}
+
+td, th {
+    text-align: center !important;
+}
+
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -40px;
+}
+
+#push {
+    height: 40px;
+}
+
+#footer {
+    height: 38px;
+    #gradient > .vertical(@navbarInverseBackground, @navbarInverseBackgroundHighlight);
+    border: 1px solid @navbarInverseBorder;
+}
+
+#footer-text {
+    color: @navbarInverseText;
+    margin-top: 7px;
+    margin-left:10px;
+}
+
+
+#footer-image {
+    margin-top: 7px;
+    margin-right: 10px;
+}
+
+
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+#wrap > .container {
+    padding-top: 40px;
+}

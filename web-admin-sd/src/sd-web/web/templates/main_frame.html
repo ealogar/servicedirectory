@@ -1,0 +1,84 @@
+{% load staticfiles %}
+{% load url from future %}
+{% spaceless %}
+
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% static "styles/bootstrap.css" %}" rel="stylesheet">
+    <link href="{% static "styles/responsive.css" %}" rel="stylesheet">
+    <link href="{% static "styles/sd-style.css" %}" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <ul class="nav pull-left">
+                        <li><a class="" href={% url 'web:home' %}><b style="font-size: 20">Service Directory</b></a></li>
+                    </ul>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-search icon-white"></i> Search <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href={% url 'web:searchCap' %}><i class="icon-search icon"></i> Search Capability</a></li>
+                                    <li><a href={% url 'web:searchEnd' %}><i class="icon-search icon"></i> Search Endpoint</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench icon-white"></i> Management<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href={% url 'web:addCap' %}><i class="icon-plus icon"></i> Add Capability</a></li>
+                                    {% comment %}<li><a href="addEnd"><i class="icon-plus icon"></i> Add Endpoint</a></li>
+                                    <li><a href="removeCap"><i class="icon-minus icon"></i> Remove Capability</a></li>
+                                    <li><a href="removeEnd"><i class="icon-minus icon"></i> Remove Endpoint</a></li>{% endcomment %}
+                                </ul>
+                            </li>
+                            <li>
+                                <a href={% url 'web:capabilities' %}><i class="icon-th-list icon-white"></i> Capabilities</a>
+                            </li>
+                        </ul>
+                        <ul class="nav pull-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{user.username}}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href={% url 'web:logout' %}><i class="icon-off icon"></i> Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div><!-- nav-collapse collapse -->
+                </div> <!-- Container -->
+            </div> <!-- navbar-inner -->
+        </div>
+        <div class="container-fluid" style="padding-top: 20px;">
+            <div class="row-fluid">
+                <div class="hero-unit">
+                    {% block content %} {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+    {% include 'footer.html' %}
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    {% block scripts %}  {% endblock %}
+</body>
+</html>
+{% endspaceless %}

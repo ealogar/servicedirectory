@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ClassItemViewModel",
+    "description": "Schema of the Class Item View.",
+    "type": "object",
+    "properties": {
+        "description": {
+            "description": "Description of the class.",
+            "type": "string"
+        },
+        "default_version": {
+            "description": "Default Class Version.",
+            "type": "string",
+            "minLength":1
+        }
+    }
+}

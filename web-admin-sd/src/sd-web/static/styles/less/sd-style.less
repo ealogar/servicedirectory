@@ -1,0 +1,43 @@
+@import "variables.less";
+
+@import "mixins.less";
+
+@import "sd-common-style.less";
+
+
+a.normalLink {
+  .link-mixin(pointer);
+}
+
+a.linkStyled {
+  cursor: default;
+  color: @grayDarker;
+  text-decoration: underline;
+  .link-mixin;
+}
+
+.link-mixin(@cursorStyle: default){
+  &:link {
+    cursor: @cursorStyle;
+    color: @grayDarker;
+    text-decoration: underline;
+  };
+  &:visited {
+    cursor: @cursorStyle;
+    color: @grayDarker;
+    text-decoration: underline;
+  };
+  &:hover {
+    cursor: @cursorStyle;
+    color: @black;
+    text-decoration: underline;
+  }
+
+}
+
+
+.hero-unit {
+  #translucent > .background(@grayLighter,0.15)
+}
+
+

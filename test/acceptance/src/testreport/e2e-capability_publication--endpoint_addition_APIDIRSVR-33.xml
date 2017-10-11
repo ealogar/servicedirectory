@@ -1,0 +1,469 @@
+<?xml version="1.0" ?><testsuite errors="0" failures="39" hostname="localhost" name="lettuce" tests="214" time="0" timestamp="2013-10-21T12:34:24"><testcase classname="Endpoint Addition : Publication of an endpoint with wrong method" name="| 0 | 0 | 0 |" time="0.000167"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints when the DB is down_TDAFBA-479" name="| 0 | 0 | 0 |" time="5.5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Publication of a new capability using unstructured data_TDAFBA-467" name="| 0 | 0 |" time="5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Publication of a new capability using malformed data" name="| 0 | 0 |" time="6.9e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints to a non existing capability" name="| 0 | 0 | 0 |" time="5.5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with missing mandatory data" name="| 0 | 0 | 0 |" time="7.4e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with missing mandatory data" name="| 0 | 1 | 0 |" time="5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid mandatory (url and version) data_TDAFBA-473" name="| 0 | 0 | 0 | 0 |" time="7.8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid mandatory (url and version) data_TDAFBA-473" name="| 0 | 0 | 1 | 0 |" time="7.7e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid mandatory (url and version) data_TDAFBA-473" name="| 0 | 0 | 2 | 0 |" time="7.2e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid mandatory (url and version) data_TDAFBA-473" name="| 0 | 0 | 3 | 0 |" time="5.1e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints with the same mandatory data _TDAFBA-477" name="| 0 | 0 | 0 | 0 |" time="8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints with the same mandatory data and different optional data_TDAFBA-478" name="| 0 | 0 | 0 | 0 |" time="8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints with the same mandatory data and different optional data_TDAFBA-478" name="| 0 | 0 | 1 | 0 |" time="5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints with the same mandatory data and different optional data_TDAFBA-478" name="| 0 | 0 | 2 | 0 |" time="5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints with the same mandatory data and different optional data_TDAFBA-478" name="| 0 | 0 | 3 | 0 |" time="8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 0 | 0 |" time="5.7e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 1 | 0 |" time="5.7e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 2 | 0 |" time="5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 3 | 0 |" time="7e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 4 | 0 |" time="5.4e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 5 | 0 |" time="5.9e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 6 | 0 |" time="5.1e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 7 | 0 |" time="7.9e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (attributes)" name="| 0 | 0 | 8 | 0 |" time="4.9e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (duplicated attributes)" name="| 0 | 0 | 0 | 0 |" time="6.7e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (environment)" name="| 0 | 0 | 0 | 0 |" time="6.8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with invalid optional data (environment)" name="| 0 | 0 | 1 | 0 |" time="7.8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with valid mandatory data_TDAFBA-470" name="| 0 | 0 | 0 |" time="7.6e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with valid mandatory data_TDAFBA-470" name="| 0 | 1 | 0 |" time="7.8e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with valid mandatory data_TDAFBA-470" name="| 0 | 2 | 0 |" time="5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with valid mandatory and optional data_TDAFBA-471" name="| 0 | 0 | 0 |" time="4.9e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with valid mandatory and optional data_TDAFBA-471" name="| 0 | 1 | 0 |" time="8.4e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with valid mandatory and optional data_TDAFBA-471" name="| 0 | 2 | 0 |" time="5.1e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with valid mandatory and optional data_TDAFBA-471" name="| 0 | 3 | 0 |" time="6.4e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with valid mandatory and optional data_TDAFBA-471" name="| 0 | 4 | 0 |" time="5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of an endpoint with a new api_name which is ignored_TDAFBA-472" name="| 0 | 0 | 0 |" time="5e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints with different mandatory and no values collision" name="| 0 | 0 | 0 | 0 |" time="4.9e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase><testcase classname="Endpoint Addition : Addition of endpoints with different mandatory and no values collision" name="| 0 | 1 | 0 | 0 |" time="6e-05"><failure message="classes_url"><![CDATA[Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/lettuce/core.py", line 144, in __call__
+    ret = self.function(self.step, *args, **kw)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/capability_publication/endpoint_addition/steps.py", line 61, in a_capability_has_already_been_published_with_data
+    api_utils.a_capability_has_already_been_published_with_data(step, old_cap_index)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/api_utils.py", line 320, in a_capability_has_already_been_published_with_data
+    rest_utils.send_to_url_the_data(step, url_template, world.old_capability)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 82, in send_to_url_the_data
+    url = self._get_url_with_values(url_template)
+  File "/Users/eag/workspace/tdaf-servicedirectory/test/acceptance/src/e2e/common/rest_utils.py", line 365, in _get_url_with_values
+    classes_url=world.config["django"]["classes_url"],
+KeyError: 'classes_url'
+]]></failure></testcase></testsuite>

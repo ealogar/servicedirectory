@@ -1,0 +1,249 @@
+# -*- coding: utf-8 -*-
+Feature: Endpoint Modification from Web
+
+	As a capability provider, I would like to have access to a web site for being able to modify the endpoints that are being exposed by the Service Directory.
+ 
+  Scenario Outline: Web endpoint modification form layout_TDAFBA-571
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I should see a form with csrf token
+        And I press "edit-$endpoint_id"
+        Then I should see "Edit endpoint: $api_name"
+        And I should see a form with csrf token
+        And I should see "Environment"
+        And I should see "Version"
+        And I should see "Url"
+        And I should see "OB"
+        And I should see "Premium"
+        And The element with id of "versionField" contains placeholder "Version Number"
+        And The element with id of "urlField" contains placeholder "Url"
+        And The element with id of "obField" contains placeholder "OB identifier"
+        And The "premiumField" checkbox should be checked
+        Examples:
+            | old_cap_index | old_endpoint_index |
+            | 0             | 0                  |
+
+    Scenario Outline: Web modification of an endpoint with valid mandatory data_TDAFBA-509
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "edit-$endpoint_id"
+        And I fill in "urlField" with "<url>"
+        And I fill in "versionField" with "<version>"
+        And I press "edit-endpoint"
+        And I store in world the endpoint "$environment", "<url>", "<version>", "null", "null"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/$api_name/$endpoints_url/$endpoint_id returns the updated endpoint data
+        Examples:
+            | ob | version | url                    | old_cap_index | old_endpoint_index | web_message      |
+            | kk | v       | u                      | 0             | 0                  | EndPoint updated |
+            | kk | 1.0     | http://endpoint.tid.es | 0             | 0                  | EndPoint updated |
+            | kk | v57.12.12.110b-unstable | http://endpoints.telefonica.com:22333/capability/my%20endpoint%20in%20a%20url%20which%20is%20pretty%20long%20to%20check%20if%20that%20poses%20a%20problem%20or%20not | 0 | 0 | EndPoint updated |
+
+    Scenario Outline: Web modification of an endpoint with valid mandatory and optional data_TDAFBA-510
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration |  True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "edit-$endpoint_id"
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "urlField" with "<url>"
+        And I fill in "versionField" with "<version>"
+        And I check "premiumField" with "<premium>"
+        And I fill in "obField" with "<ob>"
+        And I press "edit-endpoint"
+        And I store in world the endpoint "<environment>", "<url>", "<version>", "<premium>", "<ob>"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/$api_name/$endpoints_url/$endpoint_id returns the updated endpoint data
+        Examples:
+            | version | url                    | environment | premium | ob | old_cap_index | old_endpoint_index | web_message      |
+            | 1.0     | http://endpoint.tid.es | 1           | False   | 1  | 0             | 0                  | EndPoint updated |
+            | 1.0     | http://endpoint.tid.es | 2           | True    | 2  | 0             | 0                  | EndPoint updated |
+            | 1.0     | http://endpoint.tid.es | production  | False   | ES | 0             | 0                  | EndPoint updated |
+            | 1.0     | http://endpoint.tid.es | integration | True    | DE | 0             | 0                  | EndPoint updated |
+            | 1.0     | http://endpoint.tid.es | Long_environment-name_in_case_it_is_started_to_be_filled_using_some_long_weird_format | True    | long_ob-name_in_case_it_is_started_to_be_filled_using_some_long_weird_format | 0 | 0 | EndPoint updated |
+
+    Scenario Outline: Web modification of an endpoint adding optional data that was not there_TDAFBA-511
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    |
+            | 1.0     | http://endpoint.tid.es |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "edit-$endpoint_id"
+        And I fill in "environmentTextField" with "<environment>"
+        And I check "premiumField" with "<premium>"
+        And I fill in "obField" with "<ob>"
+        And I press "edit-endpoint"
+        And I store in world the endpoint "<environment>", "$url", "$version", "<premium>", "<ob>"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/$api_name/$endpoints_url/$endpoint_id returns the updated endpoint data
+        Examples:
+            | environment | premium | ob | old_cap_index | old_endpoint_index | web_message      |
+            | integration | True    | ES | 0             | 0                  | EndPoint updated |
+
+    Scenario Outline: Web modification of an endpoint with invalid mandatory data_TDAFBA-512
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "edit-$endpoint_id"
+        And I fill in "urlField" with "<url>"
+        And I fill in "versionField" with "<version>"
+        And I press "edit-endpoint"
+        And I store in world the endpoint "$environment", "<url>", "<version>", "null", "null"
+        Then I should see "400"
+        Then I should see "SVC0004"
+        Examples:
+            | version | url                    | old_cap_index | old_endpoint_index |
+            |         | http://endpoint.tid.es | 0             | 0                  |
+            | 1.0     |                        | 0             | 0                  |
+
+    Scenario Outline: Modification of an endpoint with invalid optional data_TDAFBA-513
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "edit-$endpoint_id"
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "urlField" with "<url>"
+        And I fill in "versionField" with "<version>"
+        And I check "premiumField" with "<premium>"
+        And I fill in "obField" with "<ob>"
+        And I press "edit-endpoint"
+        Then I should see "400"
+        Then I should see "SVC0004"
+        Examples:
+            | version | url                    | environment | premium | ob | old_cap_index | old_endpoint_index |
+            | 1.0     | http://endpoint.tid.es |             | True    | ES | 0             | 0                  |
+
+    Scenario Outline: Web modification of an endpoint not already published_TDAFBA-514
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has not already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        Then I should not see "$url"
+        Examples:
+            | version | url                           | environment | premium | ob | old_cap_index | old_endpoint_index |
+            | 2.0     | http://backup.endpoint.tid.es | production  | False   | DE | 0             | 0                  |
+
+    Scenario Outline: Web modification of an endpoint matching another existing endpoint_TDAFBA-515
+        Given a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                           | environment | premium | ob |
+            | 2.0     | http://backup.endpoint.tid.es | production  | False   | DE |
+        And the admin is logged
+        # next steps execute over the last endpoint created (not the first one)
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "edit-$endpoint_id"
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "urlField" with "<url>"
+        And I fill in "versionField" with "<version>"
+        And I check "premiumField" with "<premium>"
+        And I fill in "obField" with "<ob>"
+        And I press "edit-endpoint"
+        Then I should see "<web_message>"
+        And I should see "<error_code>"
+        And I should see "<error_description>"
+        Examples:
+            | version | url                    | environment | premium | ob | old_cap_index | old_endpoint_index | web_message    | error_code          | error_description | 
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES | 0             | 0                  | Update Failure | Error_Code: SVC0003 | Description: Endpoint with api_name: Cap , url: http://endpoint.tid.es and version: 1.0 already exists |
+            | 1.0     | http://endpoint.tid.es | production  | False   | DE | 0             | 0                  | Update Failure | Error_Code: SVC0003 | Description: Endpoint with api_name: Cap , url: http://endpoint.tid.es and version: 1.0 already exists |
+
+    Scenario Outline: Web endpoint modification cancel_TDAFBA-572
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "edit-$endpoint_id"
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "urlField" with "<url>"
+        And I fill in "versionField" with "<version>"
+        And I check "premiumField" with "<premium>"
+        And I fill in "obField" with "<ob>"
+        And I press "close-edit-endpoint"
+        Then The element with id of "title-endpoints" contains "Endpoints of $api_name"
+        And The element with id of "column-title-url" contains "URL"
+        And The element with id of "column-title-version" contains "Version"
+        And The element with id of "column-title-environment" contains "Environment"
+        And The element with id of "column-title-ob" contains "OB"
+        And The element with id of "column-title-premium" contains "Premium"
+        And The element with id of "column-title-options" contains "Options"
+        And I should see a form with csrf token
+        And I should see "$url"
+        And I should see "$version"
+        And I should see "$environment"
+        And I should see "$ob"
+        Examples:
+            | version | url                    | environment | premium | ob | old_cap_index | old_endpoint_index |
+            | 1.0     | http://endpoint.tid.es | 1           | False   | 1  | 0             | 0                  |
+
+    Scenario Outline: Publication of a capability when the DB is down_TDAFBA-516
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And an endpoint has already been published with data <old_endpoint_index>:
+            | version | url                    | environment | premium | ob |
+            | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the DB has stopped working
+        And the admin is logged
+        When I go to "$base_web_url/$api_name/$endpoints_url"
+        And I press "edit-$endpoint_id"
+        And I fill in "environmentTextField" with "<environment>"
+        And I fill in "urlField" with "<url>"
+        And I fill in "versionField" with "<version>"
+        And I check "premiumField" with "<premium>"
+        And I fill in "obField" with "<ob>"
+        And I press "edit-endpoint"
+        Then I should see "500"
+        Then I should see "SVC0001"
+        Examples:
+            | version | url                           | environment | premium | ob | old_cap_index | old_endpoint_index |
+            | 2.0     | http://backup.endpoint.tid.es | production  | False   | DE | 0             | 0                  |

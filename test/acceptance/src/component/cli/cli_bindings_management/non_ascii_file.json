@@ -1,0 +1,19 @@
+{
+"binding_rules":[
+{
+"group_rules": [
+  {
+     "operation": "eq", 
+     "input_context_param": "ob", 
+     "value": [
+            "españa"
+         ]
+  }
+ ], 
+"bindings": [
+            "5257b9a4fe813b16e85e0457"
+            ]
+}
+]
+}
+

@@ -1,0 +1,160 @@
+# -*- coding: utf-8 -*-
+Feature: Capability Publication from Web
+
+	As a Service Directory Administrator I would like to be able to create a new capability exposing APIs in the Service Directory.
+	This operation can only be mad from a user with admin role.
+ 
+  Scenario: Web capability publication form layout_TDAFBA-563
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url/$add_cap_url"
+        Then I should see "Fill to add a new Capability"
+        And I should see a form with csrf token
+        And I should see "Capability Name"
+        And I should see "Description"
+        And I should see "Default Version"
+        And The element with id of "api_name" contains placeholder "Capability Name"
+        And The element with id of "description" contains placeholder "Description"
+        And The element with id of "default_version" contains placeholder "1.0.0"
+
+  Scenario Outline: Web capability page layout_TDAFBA-564
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$capabilities_url"
+        Then The element with id of "title-capabilities" contains "Capabilities"
+        And The element with id of "column-title-capability" contains "Capability"
+        And The element with id of "column-title-description" contains "Description"
+        And The element with id of "column-title-default-version" contains "Default Version"
+        And The element with id of "column-title-options" contains "Options"
+        And I should see a form with csrf token
+        And I should see a link that contains the text "$api_name" and the url "$api_name/$endpoints_url"
+        And I should see "$api_name"
+        And I should see "$description"
+        And I should see "$default_version"
+        Examples:
+            | old_cap_index |
+            | 0             |
+
+    Scenario Outline: Web publication of a new capability with valid mandatory data_TDAFBA-496
+        Given the DB is working
+        And the DB has no capabilities already published
+        And the admin is logged
+        When I go to "$base_web_url/$add_cap_url"
+        And I fill in "api_name" with "<api_name>"
+        And I fill in "default_version" with "<default_version>"
+        And I press "id_submit"
+        And I press "save"
+        And I store in world the capability "<api_name>", "", "<default_version>"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/<api_name> returns the capability data
+        Examples:
+            | api_name   | default_version | web_message        |
+            | n          | v               | Capability created |
+            | Very-long-nameeeeeeeeeeeeeeeeeeeeeeeeeeee | v2.23.23.2.4-apis | Capability created |
+            | symbols    | 1.3.34-34(k)    | Capability created |
+            | Non-ASCII  | vá.éí.ñ      | Capability created |
+
+    Scenario Outline: Publication of a new capability with valid mandatory and optional data_TDAFBA-497
+        Given the DB is working
+        And the DB has no capabilities already published
+        And the admin is logged
+        When I go to "$base_web_url/$add_cap_url"
+        And I fill in "api_name" with "<api_name>"
+        And I fill in "description" with "<description>"
+        And I fill in "default_version" with "<default_version>"
+        And I press "id_submit"
+        And I press "save"
+        And I store in world the capability "<api_name>", "<description>", "<default_version>"
+        Then I should see "<web_message>"
+        And the URL $base_api_url/$apis_url/<api_name> returns the capability data
+        Examples:
+            | api_name   | description          | default_version | web_message        |
+            | n          | d                    | v               | Capability created |
+            | Empty-desc | _                    | 1.0             | Capability created |
+            | Short-desc | d                    | 1.0             | Capability created |
+            | Very-long-nameeeeeeeeeeeeeeeeeeeeeeeeeeee | Very long descriptionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn| v2.23.23.2.4-apis | Capability created |
+            | symbols    | _-+*=.,;"'@#$%()/\?! | 1.3.34-34(k)    | Capability created |
+            | Non-ASCII  | ñçáéíóú              | vá.éí.          | Capability created |
+
+    Scenario Outline: Publication of a new capability with invalid data_TDAFBA-498
+        Given the DB is working
+        And the DB has no capabilities already published
+        And the admin is logged
+        When I go to "$base_web_url/$add_cap_url"
+        And I fill in "api_name" with "<api_name>"
+        And I fill in "description" with "<description>"
+        And I fill in "default_version" with "<default_version>"
+        And I press "id_submit"
+        And I press "save"
+        Then I should see "<web_message>"
+        And I should see "<error_code>"
+        And I should see "<error_description>"
+        Examples:
+            | api_name            | description      | default_version | web_message      | error_code          | error_description |
+            | Name with spaces    | Some description | 1.0             | Creation Failure | Error_Code: SVC0004 | Description: {u'api_name': [u'Only alphanumeric characters, underscore and hyphen are permitted']} |
+            | Name.with.symbols   | Some description | 1.0             | Creation Failure | Error_Code: SVC0004 | Description: {u'api_name': [u'Only alphanumeric characters, underscore and hyphen are permitted']} |
+            | Nón-ASCII           | Some description | 1.0             | Creation Failure | Error_Code: SVC0004 | Description: {u'api_name': [u'Only alphanumeric characters, underscore and hyphen are permitted']} |
+            | [_ID]Invalid-data-1 | Some description | 1.0             | Creation Failure | Error_Code: SVC0004 | Description: {u'api_name': [u'Only alphanumeric characters, underscore and hyphen are permitted']} |
+            |                     | Some description | 1.0             | Creation Failure | Error_Code: SVC0004 | Description: {u'api_name': [u'Only alphanumeric characters, underscore and hyphen are permitted']} |
+            | Invalid-data-2      | Some description |                 | Creation Failure | Error_Code: SVC0004 | Description: {u'api_name': [u'Only alphanumeric characters, underscore and hyphen are permitted']} |
+
+    Scenario Outline: Publication of a capability with a name already used_TDAFBA-499
+        Given the DB is working
+        And a capability has already been published with data <old_cap_index>:
+            | api_name | description | default_version |
+            | Cap      | Capability  | 1.0             |
+        And the admin is logged
+        When I go to "$base_web_url/$add_cap_url"
+        And I fill in "api_name" with "<api_name>"
+        And I fill in "description" with "<description>"
+        And I fill in "default_version" with "<default_version>"
+        And I press "id_submit"
+        And I press "save"
+        And I store in world the capability "<api_name>", "<description>", "<default_version>"
+        Then I should see "<web_message>"
+        And I should see "<erro_code>"
+        And I should see "<error_description>"
+        Examples:
+            | api_name | description     | default_version | old_cap_index | web_message      | erro_code           | error_description                    |
+            | Cap      | Capability      | 1.0             | 0             | Creation Failure | Error_Code: SVC0003 | Description: Api Cap already created |
+            | Cap      | New capability  | 2.0             | 0             | Creation Failure | Error_Code: SVC0003 | Description: Api Cap already created |
+            | Cap      |                 | 2.0             | 0             | Creation Failure | Error_Code: SVC0003 | Description: Api Cap already created |
+
+    Scenario Outline: Web publication cancel_TDAFBA-565
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url/$add_cap_url"
+        And I fill in "api_name" with "<api_name>"
+        And I fill in "default_version" with "<default_version>"
+        And I press "id_submit"
+        And I press "cancel"
+        Then I should see "Fill to add a new Capability"
+        And I should see a form with csrf token
+        And I should see "Capability Name"
+        And I should see "Description"
+        And I should see "Default Version"
+        And The element with id of "api_name" contains placeholder "Capability Name"
+        And The element with id of "description" contains placeholder "Description"
+        And The element with id of "default_version" contains placeholder "1.0.0"
+        Examples:
+            | api_name   | default_version |
+            | n          | v               |
+
+    Scenario Outline: Publication of a capability when the DB is down_TDAFBA-500
+        Given the DB has stopped working
+        And the admin is logged
+        When I go to "$base_web_url/$add_cap_url"
+        And I fill in "api_name" with "<api_name>"
+        And I fill in "description" with "<description>"
+        And I fill in "default_version" with "<default_version>"
+        And I press "id_submit"
+        And I press "save"
+        Then I should see "<web_message>"
+        And I should see "<erro_code>"
+        And I should see "<error_description>"
+        Examples:
+            | api_name | description     | default_version | web_message      | erro_code           | error_description            |
+            | Cap      | Capability      | 1.0             | Creation Failure | Error_Code: SVC0001 | Description: General Failure |

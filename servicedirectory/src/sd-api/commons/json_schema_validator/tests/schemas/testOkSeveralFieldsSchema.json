@@ -1,0 +1,29 @@
+{
+    "title": "SeveralFieldsModel",
+    "description": "Several Fields Schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required":["mytext", "mynum", "mybool", "mydefault"],
+    "properties":
+    {
+        "mytext": {
+            "type":"string",
+            "min_length": 1,
+            "max_length": 10
+        },
+        "mynum": {
+            "type": "integer",
+            "maximun": 100,
+            "minimum": 0
+        },
+        "mybool": {
+            "type": "boolean"
+           
+        },
+        "mydefault": {
+            "type": "string",
+            "default": "default_value"
+        }
+
+    }
+}

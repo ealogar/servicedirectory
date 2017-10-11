@@ -1,0 +1,19 @@
+
+######
+# NeoRE LOCAL COMPONENT CONFIGURATION SCRIPT:
+#
+# All configuration variables must be defined as bash/shell variables
+# This is expected to redefine (some) variables of the project config
+# and component config, as well as its own variables
+#
+####
+
+
+## Stages to execute (boolean values, true by default)
+# Install RPMs in unit tests stage (build)
+UNITTEST_INSTALL_RPMS=false
+
+# Install requirements  in unit tests stage (build)
+# UNITTEST_INSTALL_REQS=false
+
+# VENV_PATH="$HOME/venvs/srvdir"

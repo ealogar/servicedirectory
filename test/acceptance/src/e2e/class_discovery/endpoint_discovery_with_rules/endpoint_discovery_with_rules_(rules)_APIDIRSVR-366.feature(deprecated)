@@ -1,0 +1,562 @@
+# -*- coding: utf-8 -*-
+Feature: Endpoint Discovering
+  
+  As a capability consumer
+  I would like the Service Directory to give me the most suitable endpoint for me, routing the request based on the attributes defining the endpoint.
+  So that I can consume the capability
+
+  @eq_rules
+  Scenario Outline: Discovery endpoint with eq rules and trigerring values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value       |
+      | eq        | test_param          | 1           |
+      | eq        | test_param          | hello       |
+      | eq        | test_param          | " "         |
+      | eq        | test_param          | España cañí |
+      | eq        | test_param          | 10.5        |
+      | eq        | test_param          | true        |
+      | eq        | test_param          | [BOOL_TRUE] |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+      | Client4         |
+      | Client5         |
+      | Client6         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | test_param  |
+      | Client0 | 1           |
+      | Client1 | hello       |
+      | Client2 | " "         |
+      | Client3 | España cañí |
+      | Client4 | 10.5        |
+      | Client5 | true        |
+      | Client6 | true        |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                    | environment |
+      | Cap        | v2.0    | http://endpoint.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               |
+      | 0             | 0                  | 1            | 0              | 1             | 1               |
+      | 0             | 0                  | 2            | 0              | 2             | 2               |
+      | 0             | 0                  | 3            | 0              | 3             | 3               |
+      | 0             | 0                  | 4            | 0              | 4             | 4               |
+      | 0             | 0                  | 5            | 0              | 5             | 5               |
+      | 0             | 0                  | 6            | 0              | 6             | 6               |
+
+  @eq_rules
+  Scenario Outline: Discovery endpoint with eq rules and non trigerring values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value       |
+      | eq        | test_param          | 1           |
+      | eq        | test_param          | hello       |
+      | eq        | test_param          | "  "        |
+      | eq        | test_param          | España cañí |
+      | eq        | test_param          | 10.5        |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+      | Client4         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | test_param |
+      | Client0 | 2          |
+      | Client0 | -1         |
+      | Client0 | 1.0        |
+      | Client0 | "1"        |
+      | Client1 | Hello      |
+      | Client1 | hellow     |
+      | Client1 | he llo     |
+      | Client2 | " "        |
+      | Client3 | España     |
+      | Client4 | 10,5       |
+      | Client4 | 10         |
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               |
+      | 0             | 0                  | 1            | 0              | 0             | 0               |
+      | 0             | 0                  | 2            | 0              | 0             | 0               |
+      | 0             | 0                  | 3            | 0              | 0             | 0               |
+      | 0             | 0                  | 4            | 0              | 1             | 1               |
+      | 0             | 0                  | 5            | 0              | 1             | 1               |
+      | 0             | 0                  | 6            | 0              | 1             | 1               |
+      | 0             | 0                  | 7            | 0              | 2             | 2               |
+      | 0             | 0                  | 8            | 0              | 3             | 3               |
+      | 0             | 0                  | 9            | 0              | 4             | 4               |
+      | 0             | 0                  | 10           | 0              | 4             | 4               |
+
+  @range_rules
+  Scenario Outline: Discovery endpoint with range rules and trigerring values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value     |
+      | range     | test_param          | 10,20     |
+      | range     | test_param          | 1.0,3.0   |
+      | range     | test_param          | -1,1      |
+      | range     | test_param          | -1.5,1.6  |
+      | range     | test_param          | -200,-100 |
+      | range     | test_param          | a,c       |
+      | range     | test_param          | A,c       |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+      | Client4         |
+      | Client5         |
+      | Client6         |
+      | Client7         |
+      | Client8         |
+      | Client9         |
+      | Client10        |
+      | Client11        |
+      | Client12        |
+      | Client13        |
+      | Client14        |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin   | test_param |
+      | Client0  | 15         |
+      | Client1  | 10         |
+      | Client2  | 20         |
+      | Client3  | 2.0        |
+      | Client4  | 1.0        |
+      | Client5  | 0          |
+      | Client6  | -1         |
+      | Client7  | -1.5       |
+      | Client8  | 0.0        |
+      | Client9  | 1.45       |
+      | Client10 | -150       |
+      | Client11 | b          |
+      | Client12 | abc        |
+      | Client13 | a          |
+      | Client14 | a          |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                    | environment |
+      | Cap        | v2.0    | http://endpoint.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               |
+      | 0             | 0                  | 1            | 0              | 1             | 0               |
+      | 0             | 0                  | 2            | 0              | 2             | 0               |
+      | 0             | 0                  | 3            | 0              | 3             | 1               |
+      | 0             | 0                  | 4            | 0              | 4             | 1               |
+      | 0             | 0                  | 5            | 0              | 5             | 2               |
+      | 0             | 0                  | 6            | 0              | 6             | 2               |
+      | 0             | 0                  | 7            | 0              | 7             | 3               |
+      | 0             | 0                  | 8            | 0              | 8             | 3               |
+      | 0             | 0                  | 9            | 0              | 9             | 3               |
+      | 0             | 0                  | 10           | 0              | 10            | 4               |
+      | 0             | 0                  | 11           | 0              | 11            | 5               |
+      | 0             | 0                  | 12           | 0              | 12            | 5               |
+      | 0             | 0                  | 13           | 0              | 13            | 5               |
+      | 0             | 0                  | 14           | 0              | 14            | 6               |
+
+  @range_rules
+  Scenario Outline: Discovery endpoint with range rules and no trigerring values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value       |
+      | range     | test_param          | 10.0,20.0   |
+      | range     | test_param          | 10,20       |
+      | range     | test_param          | -1,1        |
+      | range     | test_param          | 1.5,1.6     |
+      | range     | test_param          | a,c         |
+      | range     | test_param          | 1,214748364 |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+      | Client4         |
+      | Client5         |
+      | Client6         |
+      | Client7         |
+      | Client8         |
+      | Client9         |
+      | Client10        |
+      | Client11        |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin   | test_param   |
+      | Client0  | 9.9999999999 |
+      | Client1  | 20.09        |
+      | Client2  | 21           |
+      | Client3  | 9            |
+      | Client4  | 2            |
+      | Client5  | -2           |
+      | Client6  | 1.49999999   |
+      | Client7  | z            |
+      | Client8  | d            |
+      | Client9  | ca           |
+      | Client10 | -2147483648  |
+      | Client11 | 2147483648   |
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               |
+      | 0             | 0                  | 1            | 0              | 1             | 0               |
+      | 0             | 0                  | 2            | 0              | 2             | 1               |
+      | 0             | 0                  | 3            | 0              | 3             | 1               |
+      | 0             | 0                  | 4            | 0              | 4             | 2               |
+      | 0             | 0                  | 5            | 0              | 5             | 2               |
+      | 0             | 0                  | 6            | 0              | 6             | 3               |
+      | 0             | 0                  | 7            | 0              | 7             | 4               |
+      | 0             | 0                  | 8            | 0              | 8             | 4               |
+      | 0             | 0                  | 9            | 0              | 9             | 4               |
+      | 0             | 0                  | 10           | 0              | 10            | 5               |
+      | 0             | 0                  | 11           | 0              | 11            | 5               |
+
+  @range_rules
+  Scenario Outline: Discovery endpoint with range rules and non valid values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value   |
+      | range     | test_param          | 10,20   |
+      | range     | test_param          | 1.0,3.0 |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | test_param |
+      | Client0 | 5.0        |
+      | Client1 | 2          |
+      | Client2 | a          |
+      | Client3 | true       |
+    Then I get an error response of type 400 with error code SVC1021
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText                                             |
+      | Invalid parameter value: (.*). Supported values are: (.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index | exceptionText_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               | 0                   |
+      | 0             | 0                  | 1            | 0              | 1             | 1               | 0                   |
+      | 0             | 0                  | 2            | 0              | 2             | 1               | 0                   |
+      | 0             | 0                  | 3            | 0              | 3             | 1               | 0                   |
+
+  @in_rules
+  Scenario Outline: Discovery endpoint with in rules and trigerring values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value                             |
+      | in        | test_param          | 10,20                             |
+      | in        | test_param          | 0.0,-1.0                          |
+      | in        | test_param          | es*,España                        |
+      | in        | test_param          | Alone                             |
+      | in        | test_param          | a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q |
+      | in        | test_param          | 1.5,1.6,2.0                       |
+      | in        | test_param          | true,false                        |
+      | in        | test_param          | [BOOL_TRUE],[BOOL_FALSE]          |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+      | Client4         |
+      | Client5         |
+      | Client6         |
+      | Client7         |
+      | Client8         |
+      | Client9         |
+      | Client10        |
+      | Client11        |
+      | Client12        |
+      | Client13        |
+      | Client14        |
+      | Client15        |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin   | test_param |
+      | Client0  | 10         |
+      | Client1  | 20         |
+      | Client2  | 0.0        |
+      | Client3  | -1.0       |
+      | Client4  | es*        |
+      | Client5  | España     |
+      | Client6  | Alone      |
+      | Client7  | a          |
+      | Client8  | h          |
+      | Client9  | q          |
+      | Client10 | 1.5        |
+      | Client11 | 2.0        |
+      | Client12 | true       |
+      | Client13 | false      |
+      | Client14 | true       |
+      | Client15 | false      |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                    | environment |
+      | Cap        | v2.0    | http://endpoint.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               |
+      | 0             | 0                  | 1            | 0              | 1             | 0               |
+      | 0             | 0                  | 2            | 0              | 2             | 1               |
+      | 0             | 0                  | 3            | 0              | 3             | 1               |
+      | 0             | 0                  | 4            | 0              | 4             | 2               |
+      | 0             | 0                  | 5            | 0              | 5             | 2               |
+      | 0             | 0                  | 6            | 0              | 6             | 3               |
+      | 0             | 0                  | 7            | 0              | 7             | 4               |
+      | 0             | 0                  | 8            | 0              | 8             | 4               |
+      | 0             | 0                  | 9            | 0              | 9             | 4               |
+      | 0             | 0                  | 10           | 0              | 10            | 5               |
+      | 0             | 0                  | 11           | 0              | 11            | 5               |
+      | 0             | 0                  | 12           | 0              | 12            | 6               |
+      | 0             | 0                  | 13           | 0              | 13            | 6               |
+      | 0             | 0                  | 14           | 0              | 14            | 7               |
+      | 0             | 0                  | 15           | 0              | 15            | 7               |
+
+  @in_rules
+  Scenario Outline: Discovery endpoint with in rules and no trigerring values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | 2.0     | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value       |
+      | in        | test_param          | 10,20       |
+      | in        | test_param          | a,b         |
+      | in        | test_param          | es*,España  |
+      | in        | test_param          | Alone       |
+      | in        | test_param          | 1.5,1.6,2.0 |
+      | in        | test_param          | [BOOL_TRUE] |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+      | Client4         |
+      | Client5         |
+      | Client6         |
+      | Client7         |
+      | Client8         |
+      | Client9         |
+      | Client10        |
+      | Client11        |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin   | test_param |
+      | Client0  | 5          |
+      | Client1  | 0          |
+      | Client2  | -10        |
+      | Client3  | c          |
+      | Client4  | A          |
+      | Client5  | ä          |
+      | Client6  | est        |
+      | Client7  | Not_Alone  |
+      | Client8  | 1.55       |
+      | Client9  | 2.00000005 |
+      | Client10 | -1.55      |
+      | Client11 | false      |
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               |
+      | 0             | 0                  | 1            | 0              | 1             | 0               |
+      | 0             | 0                  | 2            | 0              | 2             | 0               |
+      | 0             | 0                  | 3            | 0              | 3             | 1               |
+      | 0             | 0                  | 4            | 0              | 4             | 1               |
+      | 0             | 0                  | 5            | 0              | 5             | 1               |
+      | 0             | 0                  | 6            | 0              | 6             | 2               |
+      | 0             | 0                  | 7            | 0              | 7             | 3               |
+      | 0             | 0                  | 8            | 0              | 8             | 4               |
+      | 0             | 0                  | 9            | 0              | 9             | 4               |
+      | 0             | 0                  | 10           | 0              | 10            | 4               |
+      | 0             | 0                  | 11           | 0              | 11            | 5               |
+
+  @in_rules
+  Scenario Outline: Discovery endpoint with in rules and non valid values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value       |
+      | in        | test_param          | 10,20       |
+      | in        | test_param          | 1.5,1.6,2.0 |
+      | in        | test_param          | [BOOL_TRUE] |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | test_param |
+      | Client0 | 10.0       |
+      | Client1 | 2          |
+      | Client2 | 1          |
+      | Client3 | 2          |
+    Then I get an error response of type 400 with error code SVC1021
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText                                             |
+      | Invalid parameter value: (.*). Supported values are: (.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index | exceptionText_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               | 0                   |
+      | 0             | 0                  | 1            | 0              | 1             | 1               | 0                   |
+      | 0             | 0                  | 2            | 0              | 2             | 2               | 0                   |
+      | 0             | 0                  | 3            | 0              | 3             | 2               | 0                   |
+
+  @regex_rules
+  Scenario Outline: Discovery endpoint with regex rules and trigerring values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value      |
+      | regex     | test_param          | (.*)       |
+      | regex     | test_param          | (\\d+)     |
+      | regex     | test_param          | [A-Za-z]*$ |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+      | Client4         |
+      | Client5         |
+      | Client6         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | test_param |
+      | Client0 | 20         |
+      | Client1 | " "        |
+      | Client2 | free text  |
+      | Client3 | 10         |
+      | Client4 | LeTteRs    |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                    | environment |
+      | Cap        | v2.0    | http://endpoint.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               |
+      | 0             | 0                  | 1            | 0              | 1             | 0               |
+      | 0             | 0                  | 2            | 0              | 2             | 0               |
+      | 0             | 0                  | 3            | 0              | 3             | 1               |
+      | 0             | 0                  | 4            | 0              | 4             | 2               |
+
+  @regex_rules
+  Scenario Outline: Discovery endpoint with regex rules and no trigerring values
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value      |
+      | regex     | test_param          | (\\d+)     |
+      | regex     | test_param          | [A-Za-z]*$ |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+      | Client1         |
+      | Client2         |
+      | Client3         |
+      | Client4         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | test_param |
+      | Client0 | test       |
+      | Client1 | test 1     |
+      | Client2 | 97         |
+      | Client3 | Test 1     |
+      | Client3 | ""         |
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | context_index | operation_index |
+      | 0             | 0                  | 0            | 0              | 0             | 0               |
+      | 0             | 0                  | 1            | 0              | 1             | 0               |
+      | 0             | 0                  | 2            | 0              | 2             | 1               |
+      | 0             | 0                  | 3            | 0              | 3             | 1               |
+      | 0             | 0                  | 4            | 0              | 3             | 1               |

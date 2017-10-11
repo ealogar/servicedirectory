@@ -1,0 +1,89 @@
+# -*- coding: utf-8 -*-
+Feature: Login
+
+	As an administrator I would like to have a way to log into the system with my credentials in order to do administration operations:
+	Manage capabilities (add, modify, delete)
+	Manage endpoints (add, modify, delete)
+ 
+    Scenario: Login layout_TDAFBA-517
+        Given the DB is working
+        When I go to "$base_web_url/$login_url"
+        Then I should see "Service Directory Login"
+        And I should see a form with csrf token
+        And The element with id of "username" contains placeholder "username"
+        And The element with id of "password" contains placeholder "Password"
+
+    Scenario: Login with valid data_TDAFBA-518
+        Given the DB is working
+        And user "admin" is registered
+        When I go to "$base_web_url/$login_url"
+        And I should see a form with csrf token
+        And I fill in "username" with $user
+        And I fill in "password" with $password
+        And I press "Sign in"
+        Then I should see "Service Directory - Home"
+        And I should see "admin"
+
+    Scenario Outline: Login with invalid data_TDAFBA-519
+        Given the DB is working
+        When I go to "$base_web_url/$login_url"
+        And I fill in "username" with "<username>"
+        And I fill in "password" with "<password>"
+        And I press "Sign in"
+        Then I should see "<result>"
+    Examples:
+        | username             | password             | result                          |
+        |                      |                      | username:This field is required |
+        |                      | password             | username:This field is required |
+        | username             |                      | password:This field is required |
+        | _-+*=.,;"'@#$%()/\?! | password             | Please enter a correct username and password. Note that both fields are case-sensitive. |
+        | username             | _-+*=.,;"'@#$%()/\?! | Please enter a correct username and password. Note that both fields are case-sensitive. |
+        | usernametoolongggggggggggggggggggggggggggggggggg | password | username:Ensure this value has at most 30 characters |
+        | username | passwordtoolongggggggggggggggggggggggggggggggggg | Please enter a correct username and password. Note that both fields are case-sensitive. |
+        | us                   | password             | Please enter a correct username and password. Note that both fields are case-sensitive. |
+        | username             | pa                   | Please enter a correct username and password. Note that both fields are case-sensitive. |
+        | admin                | admin                | Please enter a correct username and password. Note that both fields are case-sensitive. |
+        | admin                | onlychars            | Please enter a correct username and password. Note that both fields are case-sensitive. |
+        
+    Scenario: Login with a non registered user_TDAFBA-520
+        Given the DB is working
+        And user "QAuser" is not registered
+        When I go to "$base_web_url/$login_url"
+        And I fill in "username" with "QAuser"
+        And I fill in "password" with "12345678"
+        And I press "Sign in"
+        Then I should see "Please enter a correct username and password. Note that both fields are case-sensitive."
+
+    Scenario: Login redirect to https_TDAFBA-521
+        Given the DB is working
+        When I go to "$base_web_url/$login_url"
+        Then The browser's URL should not contain "https"
+
+    Scenario: Logout_TDAFBA-522
+        Given the DB is working
+        When I go to "$base_web_url/$login_url"
+        And I fill in "username" with $user
+        And I fill in "password" with $password
+        And I press "Sign in"
+        And I go to "$base_web_url/logout"
+        Then I should be at "$base_web_url/$login_url"
+        And I should not see "Service Directory - Home"
+
+    Scenario: Access to a wrong url_TDAFBA-523
+        Given the DB is working
+        When I go to "$base_web_url/wrongurl"
+        Then I should see "Service Directory"
+        And I should see "Page not found"
+
+    Scenario Outline: Login when the DB is down_TDAFBA-524
+        Given the DB has stopped working
+        When I go to "$base_web_url/$login_url"
+        And I fill in "username" with "<username>"
+        And I fill in "password" with "<passowrd>"
+        And I press "Sign in"
+        Then I should see "<result>"
+        Examples:
+            | username | password | result                                                                                  |
+            | QAuser   | 12345678 | Please enter a correct username and password. Note that both fields are case-sensitive. |
+            | admin    | 12345678 | Please enter a correct username and password. Note that both fields are case-sensitive. |
+

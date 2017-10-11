@@ -1,0 +1,75 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Bindings",
+    "description": "Request Context Rules with bindings Subdocuments Schema",
+    "type": "object",
+    "required": ["origin", "class_name", "binding_rules"],
+    "additionalProperties": false,
+    "properties": {
+        "_id": {
+            "description":"Identifier of the Binding",
+            "type":"string",
+            "minLength":1,
+            "maxLength": 56
+        },
+         "origin": {
+            "description": "The client name of this instance or default",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512        
+         }, 
+         "class_name": {
+            "description": "The class name of this instances or default",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512        
+         },
+         "binding_rules": {
+            "description": "Ordered array (by priority) with Rule definition",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "required": ["bindings", "group_rules"],
+                "properties": {
+                    "bindings": {
+                       "description": "List of instances to return when evaluating rule is true",
+                       "type": "array",
+                       "minItems": 1,
+                       "maxItems": 1,
+                       "items" : { "type": ["string"]}
+                    },
+                    "group_rules": {
+                       "description": "Ordered definition of rules",
+                       "type": "array",
+                       "minItems": 0,
+                       "items": {
+                           "type": "object",
+                           "description": "A matching rule is valid when input to operation with value is true",
+                           "required": ["operation", "input_context_param", "value"],
+                           "additionalProperties": false,
+                           "properties": {
+                             "operation": {
+                                "description": "Defines the rule operation",
+                                "type": "string",
+                                "enum": ["regex", "eq", "in", "range"]
+                             },
+                             "input_context_param": {
+                                "description": "Define the input context param to be applied to operation (ob, premium...)",
+                                "type": "string",
+                                "minLength": 1
+                             },
+                             "value": {
+                                "description": "Defines the value of the rule for the given operation (es, uk, true, false..)",
+                                "type": "array",
+                                "minItems": 1,
+                                "items" : { "type": ["string", "boolean", "integer", "number"]}
+                             }
+                           }
+                       }
+                    }
+                }
+            }
+         }
+    }
+}

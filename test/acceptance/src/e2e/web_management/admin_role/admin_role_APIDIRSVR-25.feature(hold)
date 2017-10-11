@@ -1,0 +1,67 @@
+# -*- coding: utf-8 -*-
+Feature: Admin Role
+
+	As a Service Directory administrator I would like to have two different web roles to access to the Web Management tool.
+	Admin Role: he will be able to create new capabilities and to add endpoints toi them.The admin role will be protected by user and password.
+	Guest Role: he will only be able to look at the different capabilities and their endpoints. This user will not be authenticated.
+ 
+    Scenario: Service Directory sign in title_TDAFBA-754
+        Given the DB is working
+        When I go to "$base_web_url"
+        Then The title should be "Sign in · Service Directory"
+
+    Scenario: Service Directory home title_TDAFBA-755
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url"
+        Then The title should be "Service Directory - Home"
+
+    Scenario: Service Directory to home link_TDAFBA-756
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url/home"
+        Then I should see a link that contains the text "Service Directory" and the url "$base_web_url/home"
+
+    Scenario: Service Directory search capability menu_TDAFBA-757
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url/home"
+        And I click "Search"
+        And I click "Search Capability"
+        Then I should see "Search Capability"
+        And I should be at "$base_web_url/$search_cap_url"
+
+    Scenario: Service Directory search endpoint menu_TDAFBA-758
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url/home"
+        And I click "Search"
+        And I click "Search Endpoint"
+        Then I should see "Search Endpoint"
+        And I should be at "$base_web_url/$search_end_url"
+
+    Scenario: Service Directory add capability menu_TDAFBA-759
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url/home"
+        And I click "Management"
+        And I click "Add Capability"
+        Then I should see "Fill to add a new Capability"
+        And I should be at "$base_web_url/$add_cap_url"
+
+    Scenario: Service Directory capabilities menu_TDAFBA-760
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url/home"
+        And I click "Capabilities"
+        Then I should see "Capabilities"
+        And I should be at "$base_web_url/$capabilities_url"
+
+    Scenario: Service Directory logout menu_TDAFBA-761
+        Given the DB is working
+        And the admin is logged
+        When I go to "$base_web_url/home"
+        And I click "$user"
+        And I click "Logout"
+        Then I should see "Service Directory Login"
+        And I should be at "$base_web_url/login"

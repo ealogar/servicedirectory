@@ -1,0 +1,661 @@
+# -*- coding: utf-8 -*-
+Feature: Endpoint Discovering
+  
+  As a capability consumer
+  I would like the Service Directory to give me the most suitable endpoint for me, routing the request based on the attributes defining the endpoint.
+  So that I can consume the capability
+
+  @done
+  Scenario Outline: Discovery with: No client_name, Valid search params and a default rule matching defined with bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | version             | (.*)  |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | version |
+      | v2.0    |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                    | environment |
+      | Cap        | v2.0    | http://endpoint.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0              |
+
+  @done
+  Scenario Outline: Discovery with: No client_name and invalid search params (Non existing params)
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | other_context_param | (.*)  |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | wrong_param        |
+      | non_existing_param |
+    Then I get an error response of type 400 with error code SVC1001
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText           |
+      | Invalid parameter: (.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | exceptionText_index | context_index |
+      | 0             | 0                  | 0            | 0                   | 0             |
+
+  @done
+  Scenario Outline: Discovery with: No client_name and invalid search params (Params of other context)
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                            | environment |
+      | v2.0    | http://endpoint_client0.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | eq        | other_context_param | 1     |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                            | environment |
+      | v2.0    | http://endpoint_default.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param   | value |
+      | eq        | default_context_param | 1     |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | other_context_param |
+      | 1                   |
+    Then I get an error response of type 400 with error code SVC1001
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText           |
+      | Invalid parameter: (.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | exceptionText_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0                   |
+
+  @done
+  Scenario Outline: Discovery with: No client_name and inalid search params (empty_params)
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                        | environment |
+      | v2.0    | http://endpoint_old.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | test                | (.*)  |
+      | eq        | test                | 1     |
+      | in        | test                | 1,2   |
+      | range     | test                | 1,10  |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | test |
+      |      |
+    Then I get an error response of type 400 with error code SVC0002
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText                 |
+      | Invalid parameter value: (.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index | endpoint_order_index | exceptionText_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0              | 0                    | 0                   |
+      | 0             | 0                  | 1               | 0             | 0            | 0              | 0                    | 0                   |
+      | 0             | 0                  | 2               | 0             | 0            | 0              | 0                    | 0                   |
+      | 0             | 0                  | 3               | 0             | 0            | 0              | 0                    | 0                   |
+
+  @done
+  Scenario Outline: Discovery with: No client_name, Valid search params, a single default rule matching defined with bindings and deleted bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | version             | (.*)  |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    And the endpoint published in position <endpoint_order_index> has been deleted
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | version |
+      | v1.0    |
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_order_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0                    |
+
+  @done
+  Scenario Outline: Discovery with: No client_name, Valid search params, multiples default rule matching defined with bindings and deleted bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                        | environment |
+      | v2.0    | http://endpoint_old.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | version             | (.*)  |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                        | environment |
+      | v2.0    | http://endpoint_new.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | version             | (.*)  |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    And the endpoint published in position <endpoint_order_index> has been deleted
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | version |
+      | v1.0    |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                        | environment |
+      | Cap        | v2.0    | http://endpoint_new.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index | endpoint_order_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0              | 0                    |
+
+  @done
+  Scenario Outline: Discovery with: No client_name, Valid search params, single default rule matching defined with empty bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | version             | (.*)  |
+    And the following bindings in <bindings_index> are available for the context rules:
+      | bindings         |
+      | [EMPTY_BINDINGS] |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | version |
+      | v2.0    |
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | bindings_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0              |
+
+  @done
+  Scenario Outline: Discovery with:  No client_name, Valid search params and non matching default rules
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | eq        | version             | 2.0   |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | version |
+      | v1.0    |
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index |
+      | 0             | 0                  | 0               | 0             | 0            |
+
+  @done
+  Scenario Outline: Discovery with:  No client_name, Valid search params and no default rules
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | version             | (.*)  |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | version |
+      | v2.0    |
+    Then I get an error response of type 400 with error code SVC1001
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText           |
+      | Invalid parameter: (.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | exceptionText_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0                   |
+
+  @done
+  Scenario Outline: Discovery with: Wrong client_name context
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin              |
+      | Non_existing_client |
+    Then I get an error response of type 400 with error code SVC1021
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText                                           |
+      | Invalid parameter value: (.*).Supported values are (.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index | exceptionText_index |
+      | 0             | 0                  | 0            | 0              | 0                   |
+
+  @done
+  Scenario Outline: Discovery without: Params and no endpoints published
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index |
+      | 0             | 0                  | 0            | 0              |
+
+  @done_copy
+  Scenario Outline: Discovery without params of several endpoints ordered just by version_TDAFBA-443
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 2.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | integration |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                        | environment |
+      | v1.0    | http://old.endpoint.tid.es | integration |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                          | environment |
+      | v1.0    | http://newer.endpoint.tid.es | integration |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v1.0.25 | http://endpoint.tid.es | integration |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                           | environment |
+      | v1.1    | http://backup.endpoint.tid.es | production  |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                           | environment |
+      | v0.9    | http://backup.endpoint.tid.es | production  |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v4      | http://endpoint.tid.es | integration |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                           | environment |
+      | v1.0    | http://newest.endpoint.tid.es | integration |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url
+    Then I get a success response of type 200 with a result set of size 8
+    And the result set contains the endpoint <endpoint_index> in position 0:
+      | class_name | version | url                    | environment |
+      | Cap        | v4      | http://endpoint.tid.es | integration |
+    And the result set contains the endpoint <endpoint_index> in position 1:
+      | class_name | version | url                    | environment |
+      | Cap        | v2.0    | http://endpoint.tid.es | integration |
+    And the result set contains the endpoint <endpoint_index> in position 2:
+      | class_name | version | url                           | environment |
+      | Cap        | v1.1    | http://backup.endpoint.tid.es | production  |
+    And the result set contains the endpoint <endpoint_index> in position 3:
+      | class_name | version | url                    | environment |
+      | Cap        | v1.0.25 | http://endpoint.tid.es | integration |
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                           | environment |
+      | Cap        | v1.0    | http://newest.endpoint.tid.es | integration |
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                          | environment |
+      | Cap        | v1.0    | http://newer.endpoint.tid.es | integration |
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                        | environment |
+      | Cap        | v1.0    | http://old.endpoint.tid.es | integration |
+    And the result set contains the endpoint <endpoint_index> in position 7:
+      | class_name | version | url                           | environment |
+      | Cap        | v0.9    | http://backup.endpoint.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | endpoint_index |
+      | 0             | 0                  | 0            | 0              |
+
+  @done
+  Scenario Outline: Discovery of an unexisting capability_TDAFBA-689
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has not already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | version |
+      | v1.0    |
+    Then I get an error response of type 404 with error code SVC1006
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText                |
+      | Resource (.*) does not exist |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | exceptionText_index |
+      | 0             | 0                  | 0            | 0                   |
+
+  @db
+  Scenario Outline: Discovery when the DB is down_TDAFBA-448
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | test_param |
+      | v1.0    | http://endpoint.tid.es | test_value |
+    And the DB has stopped working
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | version |
+      | v1.0    |
+    Then I get an error response of type 500 with error code SVR1000
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText            |
+      | Generic Server Error(.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | params_index | exceptionText_index |
+      | 0             | 0                  | 0            | 0                   |
+
+  @multirules
+  Scenario Outline: Discovery with: client_name, Valid search params and multi rule matching defined with bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | range     | param_1             | 1,5   |
+      | eq        | param_2             | 2     |
+      | regex     | param_3             | (.*)  |
+      | in        | param_4             | a,b   |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | param_1 | param_2 | param_3   | param_4 |
+      | Client0 | 3       | 2       | any_value | a       |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                    | environment |
+      | Cap        | v2.0    | http://endpoint.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index |
+      | 0             | 0                  | all             | 0             | 0            | 0              |
+
+  @multirules
+  Scenario Outline: Discovery with: client_name, Valid search params and multi rule not matching defined with bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | range     | param_1             | 1,5   |
+      | eq        | param_2             | 2     |
+      | in        | param_3             | a,b   |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | param_1 | param_2 | param_3 |
+      | Client0 | 3       | 2       | c       |
+      | Client0 | 6       | 3       | c       |
+    Then I get a success response of type 200 with a result set of size 0
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index |
+      | 0             | 0                  | all             | 0             | 0            | 0              |
+      | 0             | 0                  | all             | 0             | 1            | 0              |
+
+  @multirules
+  Scenario Outline: Discovery with: client_name, Valid search params and multi rule and conflictive values in first rule
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v2.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value   |
+      | in        | param_1             | 1,5     |
+      | in        | param_1             | 1.0,5.0 |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | param_1 |
+      | Client0 | 1.0     |
+      | Client0 | 5.0     |
+    Then I get an error response of type 400 with error code SVC1021
+    And the exceptionText contains <exceptionText_index>
+      | exceptionText                                             |
+      | Invalid parameter value: (.*). Supported values are: (.*) |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index | exceptionText_index |
+      | 0             | 0                  | all             | 0             | 0            | 0              | 0                   |
+      | 0             | 0                  | all             | 0             | 1            | 0              | 0                   |
+
+  @multigroups
+  Scenario Outline: Discovery with: client_name, Valid search params and multi groups all matching defined with bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                           | environment |
+      | v2.0    | http://endpoint_group1.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | range     | param_1             | 1,5   |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                           | environment |
+      | v3.0    | http://endpoint_group2.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | range     | param_1             | 1,10  |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                           | environment |
+      | v4.0    | http://endpoint_group3.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | eq        | param_1             | 9     |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | param_1 |
+      | Client0 | 1       |
+      | Client0 | 6       |
+      | Client0 | 9       |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                           | environment |
+      | Cap        | v2.0    | http://endpoint_group1.tid.es | production  |
+      | Cap        | v3.0    | http://endpoint_group2.tid.es | production  |
+      | Cap        | v3.0    | http://endpoint_group2.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0              |
+      | 0             | 0                  | 0               | 0             | 1            | 1              |
+      | 0             | 0                  | 0               | 0             | 2            | 2              |
+
+  @simple_context_jump
+  Scenario Outline: Discovery with: client_name, default, Valid search params and a matching rule defined with bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                            | environment |
+      | v2.0    | http://endpoint_client0.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | eq        | param_1             | 1     |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                            | environment |
+      | v2.0    | http://endpoint_default.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | eq        | param_1             | 2     |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | param_1 |
+      | Client0 | 1       |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                            | environment |
+      | Cap        | v2.0    | http://endpoint_client0.tid.es | production  |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index |
+      | 0             | 0                  | 0               | 0             | 0            | 0              |
+
+  @complex_context_jump
+  Scenario Outline: Discovery with: client_name, Valid search params and multi groups all matching defined with bindings
+    Given the user performing the operation is:
+      | username | password |
+      | admin    | admin    |
+    Given a capability has already been published with data <old_cap_index>:
+      | class_name | description | default_version |
+      | Cap        | Capability  | 1.0             |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                         | environment | attributes_keys | attributes_values |
+      | v2.0    | http://endpoint_loc1.tid.es | production  | filter          | filter_value      |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                         | environment |
+      | v2.0    | http://endpoint_loc2.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | range     | param_1             | 1,5   |
+      | eq        | param_2             | 5     |
+      | in        | param_3             | a,b   |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment | attributes_keys | attributes_values |
+      | v3.0    | http://endpoint.tid.es | production  | filter          | filter_value      |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                    | environment |
+      | v4.0    | http://endpoint.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value   |
+      | range     | param_4             | 5,10    |
+      | eq        | param_2             | 8       |
+      | in        | param_3             | a,b,c,d |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | Client0         |
+    And an endpoint has already been published with data <old_endpoint_index>:
+      | version | url                            | environment |
+      | v2.0    | http://endpoint_default.tid.es | production  |
+    And the following bindings rules are available <operation_index>:
+      | operation | input_context_param | value |
+      | regex     | param_5             | (.*)  |
+    And the previous bindings are pusblished for the context <context_index>:
+      | api_client_name |
+      | default         |
+    When I request the resource $base_api_url/$apis_url/$api_name/$endpoints_url with parameters <params_index>:
+      | origin  | param_1         | param_2 | param_3 | param_4         | attributes.filter |
+      | Client0 | 2               | 5       | a       | [MISSING_PARAM] | filter_value      |
+      | Client0 | [MISSING_PARAM] | 8       | a       | 8               | filter_value      |
+      | Client0 | 1               | 8       | a       | 8               | filter_value      |
+    Then I get a success response of type 200 with a result set of size 1
+    And the result set contains the endpoint <endpoint_index>:
+      | class_name | version | url                         | environment | attributes_keys | attributes_values |
+      | Cap        | v2.0    | http://endpoint_loc1.tid.es | production  | filter          | filter_value      |
+      | Cap        | v3.0    | http://endpoint.tid.es      | production  | filter          | filter_value      |
+
+    Examples: 
+      | old_cap_index | old_endpoint_index | operation_index | context_index | params_index | endpoint_index |
+      | 0             | 0                  | all             | 0             | 0            | 0              |
+      | 0             | 0                  | all             | 0             | 1            | 1              |
+      | 0             | 0                  | all             | 0             | 2            | 1              |

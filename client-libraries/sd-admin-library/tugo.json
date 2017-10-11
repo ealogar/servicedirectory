@@ -1,0 +1,19 @@
+{
+"binding_rules":[
+ {
+  "group_rules": [
+     {
+      "operation": "eq", 
+      "input_context_param": "ob", 
+      "value": ["es"]
+     }
+    ], 
+  "bindings": ["5256e72bf26ba311c07a0e56"]
+ },
+ {
+   "group_rules" : [],
+   "bindings": ["5257f4604e628a00df66e39a"]
+ }
+]
+}
+

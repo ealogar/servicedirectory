@@ -1,0 +1,13 @@
+# -*- coding: utf-8 -*-
+Feature: Setup
+    Create project Mongo + Django + Django Rest framework and Pymongo conectivity.
+    
+    Scenario: Test Django and Mongo DB versions with Mongo DB up
+        Given the DB is working
+        When I request the resource {base_url}/sd/v1/
+        Then I get the correct version of Mongo and Django
+        
+    Scenario: Test Django and Mongo DB versions with Mongo DB down, using cache
+        Given the DB has stopped working
+        When I request the resource {base_url}/sd/v1/
+        Then I get the correct version of Mongo and Django

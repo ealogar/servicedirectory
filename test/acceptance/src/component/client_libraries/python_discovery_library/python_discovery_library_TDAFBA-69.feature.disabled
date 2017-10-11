@@ -1,0 +1,400 @@
+# -*- coding: utf-8 -*-
+Feature: Python Discovery Library
+
+	As a python capability consumer,
+	I would like to have a client library written in Python to get the endpoints from the Service Directory.
+	The client library must manage a cache with a short and a long TTL in order to avoid service outages in case of the service directory is down.
+ 
+    Scenario Outline: Initialization of the library with wrong host or port
+        Given I instantiate the library with values <config_values>: 
+            | host      | port  | ttr | ttl | timeout | sd_version |
+            | 2.2.2.2   | 8889  | 5   | 1   | 5       | v1         |
+            | 127.0.0.1 | 54321 | 5   | 1   | 5       | v1         |
+            # overrides the library configuration set before each scenario
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   |
+            | Test_cap_0 |
+        Then I get a exception of type ConnectedException
+        
+    Examples:
+        | config_values | input_data |
+        | 0             | 0          |
+        | 1             | 0          |
+        
+    Scenario Outline: Initialization of the library with wrong SD version
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_0/$endpoints_url and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_0 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And I instantiate the library with values <config_values>:
+            | host      | port  | ttr | ttl | timeout | sd_version |
+            | 127.0.0.1 | 8889  | 5   | 1   | 5       | vvvv       |
+            # overrides the library configuration set before each scenario
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   |
+            | Test_cap_0 |
+        Then I get a exception of type RemoteException
+        
+    Examples:
+        | config_values | input_data |
+        | 0             | 0          |
+        
+    Scenario Outline: Initialization of the library with right values
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_0/$endpoints_url and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_0 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And I instantiate the library with values <config_values>:
+            | host      | port  | ttr | ttl | timeout | sd_version |
+            | 127.0.0.1 | 8889  | 5   | 1   | 5       | v1         |
+            # overrides the library configuration set before each scenario
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   |
+            | Test_cap_0 |
+        Then I get a result set of size 1
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_0 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        
+    Examples:
+        | config_values | input_data | response_index |
+        | 0             | 0          | 0              |
+        
+    Scenario Outline: Discovery of an endpoint with several search parameters (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_1/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_1 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_1 | integration | True    |
+        Then I get a result set of size 1
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_1 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of several endpoints with one search parameter (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_2/$endpoints_url?version=1.0 and send a response of type 200 with dataset:
+            | api_name_2 | id                       | version                  | url                     | environment | premium | ob                          |
+            | Test_cap_2 | 5176a646255c2d27a87027d0 | v                        | http://endpoint1.tid.es | integration | True    | ES                          |
+            | Test_cap_2 | 5176a646255c2d27a87027d1 | 1.0                      | http://endpoint2.tid.es | production  | False   | DE                          |
+            | Test_cap_2 | 5176a646255c2d27a87027d2 | v57.12.23b(110)-unstable | http://endpoint3.tid.es | integration | True    | (long-OB_with_some_symbols) |
+            | Test_cap_2 | 5176a646255c2d27a87027d3 | á.é.í                    | http://endpoint4.tid.es | integration | True    | áéíóúüçñ                    |
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | version |
+            | Test_cap_2 | 1.0     |
+        Then I get a result set of size 4
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_2 | 5176a646255c2d27a87027d0 | v       | http://endpoint1.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_2 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | production  | False   | DE |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version                  | url                     | environment | premium | ob                          |
+            | Test_cap_2 | 5176a646255c2d27a87027d2 | v57.12.23b(110)-unstable | http://endpoint3.tid.es | integration | True    | (long-OB_with_some_symbols) |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob       |
+            | Test_cap_2 | 5176a646255c2d27a87027d3 | á.é.í   | http://endpoint4.tid.es | integration | True    | áéíóúüçñ |
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of several endpoints ordered by version (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_3/$endpoints_url and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_3 | 5176a646255c2d27a87027d0 | 4.0     | http://endpoint.tid.es | integration | True    | ES |
+            | Test_cap_3 | 5176a646255c2d27a87027d1 | 2.0     | http://endpoint.tid.es | integration | True    | ES |
+            | Test_cap_3 | 5176a646255c2d27a87027d2 | 1.0.25  | http://endpoint.tid.es | integration | True    | ES |
+            | Test_cap_3 | 5176a646255c2d27a87027d3 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+            | Test_cap_3 | 5176a646255c2d27a87027d4 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+            | Test_cap_3 | 5176a646255c2d27a87027d5 | 0.9     | http://endpoint.tid.es | integration | True    | ES |
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   |
+            | Test_cap_3 |
+        Then I get a result set of size 1
+        And the result set contains the endpoint <response_index> in position 0:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_3 | 5176a646255c2d27a87027d0 | 4.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index> in position 1:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_3 | 5176a646255c2d27a87027d1 | 2.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index> in position 2:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_3 | 5176a646255c2d27a87027d2 | 1.0.25  | http://endpoint.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_3 | 5176a646255c2d27a87027d3 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_3 | 5176a646255c2d27a87027d4 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index> in position 5:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_3 | 5176a646255c2d27a87027d5 | 0.9     | http://endpoint.tid.es | integration | True    | ES |
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of endpoints with empty result set (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_4/$endpoints_url?version=1.0 and send a response of type 200 with dataset:
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | version |
+            | Test_cap_4 | 1.0     |
+        Then I get a result set of size 0
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of endpoints with invalid search parameters (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_5/$endpoints_url?premium=whatever and send a response of type 400 with data <response_index>:
+            | error_code | description                             |
+            | SVC0004    | Expected valid boolean value in premium |
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | version | premium  |
+            | Test_cap_5 | 1.0     | whatever |
+        Then I get a exception of type RemoteException
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of endpoints with unknown search parameters using PARAM_CHECK_STRICT  (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_5/$endpoints_url?unknown_param=some_value&behaviour=PARAM_CHECK_STRICT and send a response of type 400 with data <response_index>:
+            | error_code | description                                                         |
+            | SVC0004    | Strict mode error: You can not search by the property unknown_param |
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | version | unknown_param | behaviour          |
+            | Test_cap_5 | 1.0     | some_value    | PARAM_CHECK_STRICT |
+        Then I get a exception of type RemoteException
+        
+    Examples:
+        | response_index | input_data |
+        | 0              | 0          |
+        
+    Scenario Outline: Discovery of endpoints of an unexisting capability (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_5/$endpoints_url?version=1.0 and send a response of type 404 with data <response_index>:
+            | error_code | description     |
+            | SVC0002    | General Failure |
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | version |
+            | Test_cap_5 | 1.0     |
+        Then I get a exception of type RemoteException
+        
+    Examples:
+        | response_index | input_data |
+        | 0              | 0          |
+        
+    Scenario Outline: Discovery of endpoints when the request fails due to internal server error (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_5/$endpoints_url?version=1.0 and send a response of type 500 with data <response_index>:
+            | error_code | description                        |
+            | SVC0001    | The api capability does not exist. |
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | version |
+            | Test_cap_5 | 1.0     |
+        Then I get a exception of type ConnectedException
+        
+    Examples:
+        | response_index | input_data |
+        | 0              | 0          |
+        
+    Scenario Outline: Discovery of endpoints when the request to the SD times out (request not in cache)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_5/$endpoints_url?version=1.0 and send a response of type 200 with a delay of 6 seconds and dataset:
+            | api_name   | id                       | version | url                    | environment | premium | ob |
+            | Test_cap_5 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint.tid.es | integration | True    | ES |
+        # assumes the timeout in the library was set to 5 seconds in the properties
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | version |
+            | Test_cap_5 | 1.0     |
+        Then I get a exception of type ConnectedException
+        
+    Examples:
+        | input_data |
+        | 0          |
+        
+    Scenario Outline: Discovery of endpoints when the SD is down (request not in cache)
+        Given the SD mock is not working 
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | version |
+            | Test_cap_5 | 1.0     |
+        Then I get a exception of type ConnectedException
+        
+    Examples:
+        | input_data |
+        | 0          |
+        
+    Scenario Outline: Discovery of several endpoints with several search parameters (request in cache and refreshed)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        And I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d2 | 1.0     | http://endpoint3.tid.es | integration | True    | DE |
+            | Test_cap_6 | 5176a646255c2d27a87027d3 | 1.0     | http://endpoint4.tid.es | integration | True    | DE |
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        Then I get a result set of size 2
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of several endpoints with several search parameters (request in cache but not refreshed)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        And I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d2 | 1.0     | http://endpoint3.tid.es | integration | True    | DE |
+            | Test_cap_6 | 5176a646255c2d27a87027d3 | 1.0     | http://endpoint4.tid.es | integration | True    | DE |
+        And I wait for 6 seconds
+        # assumes the time-to-refresh of the cache in the library was set to 5 seconds in the properties
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        Then I get a result set of size 2
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d2 | 1.0     | http://endpoint3.tid.es | integration | True    | DE |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d3 | 1.0     | http://endpoint4.tid.es | integration | True    | DE |
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of several endpoints with several search parameters (request in cache but expired)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        And I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d2 | 1.0     | http://endpoint3.tid.es | integration | True    | DE |
+            | Test_cap_6 | 5176a646255c2d27a87027d3 | 1.0     | http://endpoint4.tid.es | integration | True    | DE |
+        And I wait for 12 seconds
+        # assumes the time-to-live of the cache in the library was set to 11 seconds (0.003 hours) in the properties
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        Then I get a result set of size 2
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d2 | 1.0     | http://endpoint3.tid.es | integration | True    | DE |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d3 | 1.0     | http://endpoint4.tid.es | integration | True    | DE |
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of several endpoints with several search parameters when the SD is down (request in cache and refreshed)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        And I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        And the SD Mock is not working 
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        Then I get a result set of size 2
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of several endpoints with several search parameters when the SD is down (request in cache but not refreshed)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        And I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        And the SD Mock is not working 
+        And I wait for 6 seconds
+        # assumes the time-to-refresh of the cache in the library was set to 5 seconds in the properties
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        Then I get a result set of size 2
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+        And the result set contains the endpoint <response_index>:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        
+    Examples:
+        | input_data | response_index |
+        | 0          | 0              |
+        
+    Scenario Outline: Discovery of several endpoints with several search parameters when the SD is down (request in cache but expired)
+        Given the SD mock is working 
+        And I configure the SD mock to get the request to /$apis_url/Test_cap_6/$endpoints_url?environment=integration&premium=True and send a response of type 200 with dataset:
+            | api_name   | id                       | version | url                     | environment | premium | ob |
+            | Test_cap_6 | 5176a646255c2d27a87027d0 | 1.0     | http://endpoint1.tid.es | integration | True    | ES |
+            | Test_cap_6 | 5176a646255c2d27a87027d1 | 1.0     | http://endpoint2.tid.es | integration | True    | ES |
+        And I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        And the SD Mock is not working 
+        And I wait for 12 seconds
+        # assumes the time-to-live of the cache in the library was set to 11 seconds (0.003 hours) in the properties
+        When I use the library to search for endpoints with data <input_data>:
+            | api_name   | environment | premium |
+            | Test_cap_6 | integration | True    |
+        Then I get a exception of type ConnectedException
+        
+    Examples:
+        | input_data |
+        | 0          |
+        
